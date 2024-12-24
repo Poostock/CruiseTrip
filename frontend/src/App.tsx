@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 
-import Trainer from "./page/admid/Class/Trainer";
-import CruiseTrip from "./page/admid/Class";
-import CruiseTripCreate from "./page/admid/Class/Create";
-import EditCruiseTrip from "./page/admid/Class/Edit";
-import Ship from "./page/admid/Class/Ship";
+import Trainer from "./page/admid/CruiseTrip/Trainer";
+import CruiseTrip from "./page/admid/CruiseTrip";
+import CruiseTripCreate from "./page/admid/CruiseTrip/Create";
+import EditCruiseTrip from "./page/admid/CruiseTrip/Edit";
+import Ship from "./page/admid/CruiseTrip/Ship";
 
 
 function App() {
