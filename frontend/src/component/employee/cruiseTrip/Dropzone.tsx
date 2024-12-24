@@ -8,11 +8,11 @@ interface FileWithPreview extends File {
 }
 
 interface DropzoneProps {
-    classPicURL?: string; // Optional prop for image URL
+    planPicURL?: string; // Optional prop for image URL
     onDrop: (files: File[]) => void;
 }
 
-const Dropzone: React.FC<DropzoneProps> = ({ classPicURL, onDrop }) => {
+const Dropzone: React.FC<DropzoneProps> = ({ planPicURL, onDrop }) => {
     const [files, setFiles] = useState<FileWithPreview[]>([]);
     const { getRootProps, getInputProps } = useDropzone({
         onDrop: (acceptedFiles) => {
@@ -48,10 +48,10 @@ const Dropzone: React.FC<DropzoneProps> = ({ classPicURL, onDrop }) => {
             }}
         >
             <input {...getInputProps()} />
-            {classPicURL || files.length > 0 ? (
+            {planPicURL || files.length > 0 ? (
                 <div style={{ width: "100%", height: "100%", position: "relative" }}>
                     <img
-                        src={classPicURL || files[0].preview}
+                        src={planPicURL || files[0].preview}
                         alt="Preview"
                         style={{
                             width: "100%",

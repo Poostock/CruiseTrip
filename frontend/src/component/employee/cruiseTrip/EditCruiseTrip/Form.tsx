@@ -4,18 +4,20 @@ import Input from "../Input";
 import Select from "../Select";
 import Textarea from "../Textarea";
 import DateTimePicker from "../DateTimePicker";
-import { TrainersInterface } from "../../../../interfaces/IRoute";
+import { RouteInterface } from "../../../../interfaces/IRoute";
 import { ShipInterface } from "../../../../interfaces/IShip";
 
 interface FormProps {
-    className: string;
-    setClassName: (value: string) => void;
-    trainers: TrainersInterface[];
-    selectedTrainer: number | undefined;
-    setSelectedTrainer: (value: number | undefined) => void;
-    classTypes: ShipInterface[];
-    selectedType: number | undefined;
-    setSelectedType: (value: number | undefined) => void;
+    cruiseTripName: string;
+    setCruiseTripName: (value: string) => void;
+    routes: RouteInterface[];
+    selectedRoute: number | undefined;
+    setSelectedRoute: (value: number | undefined) => void;
+    ships: ShipInterface[];
+    selectedShip: number | undefined;
+    setSelectedShip: (value: number | undefined) => void;
+    planPrice: number | undefined; // เพิ่มฟิลด์สำหรับ PlanPrice
+    setPlanPrice: React.Dispatch<React.SetStateAction<number | undefined>>; // เพิ่ม Setter สำหรับ PlanPrice
     description: string;
     setDescription: (value: string) => void;
     startDate: Date | null;
@@ -27,14 +29,16 @@ interface FormProps {
 }
 
 const Form: React.FC<FormProps> = ({
-    className,
-    setClassName,
-    trainers,
-    selectedTrainer,
-    setSelectedTrainer,
-    classTypes,
-    selectedType,
-    setSelectedType,
+    cruiseTripName,
+    setCruiseTripName,
+    routes,
+    selectedRoute,
+    setSelectedRoute,
+    ships,
+    selectedShip,
+    setSelectedShip,
+    planPrice,
+    setPlanPrice,
     description,
     setDescription,
     startDate,
@@ -48,26 +52,32 @@ const Form: React.FC<FormProps> = ({
         <div className="flex-1 pt-7">
             <div className="flex flex-col items-start ml-[40px]">
                 <Label text="Name" />
-                <Input placeholder="Enter Name here" value={className} onChange={(e) => setClassName(e.target.value)} />
+                <Input placeholder="Enter Name here" value={cruiseTripName} onChange={(e) => setCruiseTripName(e.target.value)} />
                 <Select
-                    options={classTypes.map((type) => ({
-                        value: type.ID?.toString() || "",
-                        label: type.Name || "Unnamed",
+                    options={ships.map((ship) => ({
+                        value: ship.ID?.toString() || "",
+                        label: ship.Name || "Unnamed",
                     }))}
-                    value={selectedType?.toString() || ""}
-                    onChange={(value) => setSelectedType(value ? Number(value) : undefined)}
+                    value={selectedShip?.toString() || ""}
+                    onChange={(value) => setSelectedShip(value ? Number(value) : undefined)}
                     label="Ship"
                 />
                 <Label text="Description" />
                 <Textarea placeholder="Write description here" value={description} onChange={(e) => setDescription(e.target.value)} />
                 <Select
-                    options={trainers.map((trainer) => ({
-                        value: trainer.ID?.toString() || "",
-                        label: trainer.Name || "Unnamed",
+                    options={routes.map((route) => ({
+                        value: route.ID?.toString() || "",
+                        label: route.Name || "Unnamed",
                     }))}
-                    value={selectedTrainer?.toString() || ""}
-                    onChange={(value) => setSelectedTrainer(value ? Number(value) : undefined)}
-                    label="Trainer"
+                    value={selectedRoute?.toString() || ""}
+                    onChange={(value) => setSelectedRoute(value ? Number(value) : undefined)}
+                    label="Route"
+                />
+                <Label text="Plan Price" />
+                <Input
+                    placeholder="Enter Plan Price here"
+                    value={planPrice?.toString() || ""}
+                    onChange={(e) => setPlanPrice(Number(e.target.value) || undefined)}
                 />
                 <DateTimePicker
                     selectedDate={startDate || new Date()}

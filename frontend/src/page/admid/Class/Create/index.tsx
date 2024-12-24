@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../../../../component/admin/class/Navbar";
-import SideBar from "../../../../component/admin/class/SideBar";
-import Dropzone from "../../../../component/admin/class/Dropzone";
-import ConfirmModal from "../../../../component/admin/class/CreateCruiseTrip/ConfirmModal";
+import Navbar from "../../../../component/employee/cruiseTrip/Navbar";
+import SideBar from "../../../../component/employee/cruiseTrip/SideBar";
+import Dropzone from "../../../../component/employee/cruiseTrip/Dropzone";
+import ConfirmModal from "../../../../component/employee/cruiseTrip/CreateCruiseTrip/ConfirmModal";
 import { FaRegSave } from "react-icons/fa";
 import { RouteInterface } from "../../../../interfaces/IRoute";
 import { ShipInterface } from "../../../../interfaces/IShip";
@@ -11,22 +11,23 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { CreateCruiseTrip } from "../../../../service/https/cruiseTrip";
 import { GetShips } from "../../../../service/https/cruiseTrip/ship";
-import { GetTrainers } from "../../../../service/https/cruiseTrip/trainer";
+import { GetRoutes } from "../../../../service/https/cruiseTrip/route";
 import imageCompression from "browser-image-compression";
-import CruiseTripForm from "../../../../component/admin/class/CreateCruiseTrip/CruiseTripForm";
+import CruiseTripForm from "../../../../component/employee/cruiseTrip/CreateCruiseTrip/CruiseTripForm";
 
-const ClassCreate: React.FC = () => {
-    const [className, setClassName] = useState<string>("");
-    const [selectedTrainer, setSelectedTrainer] = useState<number | undefined>(1);
-    const [selectedType, setSelectedType] = useState<number | undefined>(1);
+const CruiseTripCreate: React.FC = () => {
+    const [cruiseTripName, setCruiseTripName] = useState<string>("");
+    const [routes, setRoutes] = useState<RouteInterface[]>([]);
+    const [selectedRoute, setSelectedRoute] = useState<number | undefined>(undefined);
+    const [selectedShip, setSelectedShip] = useState<number | undefined>(undefined);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
     const [description, setDescription] = useState<string>("");
-    const [classPic, setClassPic] = useState<File | null>(null);
-    const [classPicURL, setClassPicURL] = useState<string>("");
+    const [planImg, setPlanImg] = useState<File | null>(null);
+    const [planPicURL, setPlanPicURL] = useState<string>("");
+    const [planPrice, setPlanPrice] = useState<number | undefined>(undefined);
     const [particNum, setParticNum] = useState<number | undefined>(undefined);
-    const [trainers, setTrainers] = useState<RouteInterface[]>([]);
-    const [classTypes, setClassTypes] = useState<ShipInterface[]>([]);
+    const [ships, setShips] = useState<ShipInterface[]>([]);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -35,25 +36,25 @@ const ClassCreate: React.FC = () => {
         try {
             const res = await GetShips();
             if (res) {
-                setClassTypes(res);
+                setShips(res);
             } else {
-                console.error("Failed to fetch class types");
+                console.error("Failed to fetch ship");
             }
         } catch (error) {
-            console.error("Failed to fetch ClassTypes", error);
+            console.error("Failed to fetch Ships", error);
         }
     };
 
-    const fetchTrainers = async () => {
+    const fetchRoutes = async () => {
         try {
-            const res = await GetTrainers();
+            const res = await GetRoutes();
             if (res) {
-                setTrainers(res);
+                setRoutes(res);
             } else {
-                console.error("Failed to fetch trainers");
+                console.error("Failed to fetch routes");
             }
         } catch (error) {
-            console.error("Failed to fetch Trainers", error);
+            console.error("Failed to fetch Routes", error);
         }
     };
 
@@ -61,11 +62,11 @@ const ClassCreate: React.FC = () => {
         setConfirmLoading(true);
         const errors: string[] = [];
 
-        if (!className) errors.push("Please enter the class name.");
-        if (!classPic) errors.push("Please upload a class picture.");
-        if (!selectedType) errors.push("Please select a class type.");
+        if (!cruiseTripName) errors.push("Please enter the class name.");
+        if (!planImg) errors.push("Please upload a class picture.");
+        if (!selectedShip) errors.push("Please select a class type.");
         if (!description) errors.push("Please enter a description.");
-        if (!selectedTrainer) errors.push("Please select a trainer.");
+        if (!selectedRoute) errors.push("Please select a trainer.");
         if (!startDate) errors.push("Please select a start date.");
         if (!endDate) errors.push("Please select an end date.");
         if (particNum === undefined) errors.push("Please enter the number of attendees.");
@@ -105,15 +106,15 @@ const ClassCreate: React.FC = () => {
             const adminID = localStorage.getItem("id");
             const adminIDNumber = adminID ? Number(adminID) : 1;
             const newClass: CruiseTripInterface = {
-                CruiseTripName: className,
+                CruiseTripName: cruiseTripName,
                 Deets: description,
-                TrainerID: selectedTrainer,
-                ClassPic: classPic ? await getBase64(classPic) : classPicURL,
+                RouteID: selectedRoute,
+                PlanImg: planImg ? await getBase64(planImg) : planPicURL,
                 ParticNum: particNum,
                 StartDate: startDate ? new Date(startDate) : undefined,
                 EndDate: endDate ? new Date(endDate) : undefined,
-                ClassTypeID: selectedType,
-                AdminID: adminIDNumber,
+                ShipID: selectedShip,
+                EmployeeID: adminIDNumber,
             };
 
             console.log("Creating class with data:", newClass);
@@ -154,10 +155,10 @@ const ClassCreate: React.FC = () => {
             };
             try {
                 const compressedFile = await imageCompression(file, options);
-                setClassPic(compressedFile);
+                setPlanImg(compressedFile);
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setClassPicURL(reader.result as string);
+                    setPlanPicURL(reader.result as string);
                 };
                 reader.readAsDataURL(compressedFile);
             } catch (error) {
@@ -179,24 +180,24 @@ const ClassCreate: React.FC = () => {
 
     useEffect(() => {
         fetchShips();
-        fetchTrainers();
+        fetchRoutes();
     }, []);
 
     useEffect(() => {
-        if (trainers.length > 0) {
-            if (selectedTrainer === undefined) {
-                setSelectedTrainer(trainers[0].ID);
+        if (routes.length > 0) {
+            if (selectedRoute === undefined) {
+                setSelectedRoute(routes[0].ID);
             }
         }
-    }, [trainers, selectedTrainer]);
+    }, [routes, selectedRoute]);
 
     useEffect(() => {
-        if (classTypes.length > 0) {
-            if (selectedType === undefined) {
-                setSelectedType(classTypes[0].ID);
+        if (ships.length > 0) {
+            if (selectedShip === undefined) {
+                setSelectedShip(ships[0].ID);
             }
         }
-    }, [classTypes, selectedType]);
+    }, [ships, selectedShip]);
 
     return (
         <div className="flex">
@@ -218,24 +219,26 @@ const ClassCreate: React.FC = () => {
                 <div className="flex flex-wrap justify-center">
                     <div className="bg-gray4 mt-5 w-[1000px] h-[480px] rounded-3xl overflow-auto scrollable-div flex justify-center">
                         <div className="flex flex-row items-start m-8">
-                            <Dropzone onDrop={handleDrop} classPicURL={classPicURL} />
+                            <Dropzone onDrop={handleDrop} planPicURL={planPicURL} />
                             <CruiseTripForm
-                                cruiseTripName={className}
-                                setCruiseTripName={setClassName}
-                                selectedShip={selectedType}
-                                setSelectedShip={setSelectedType}
+                                cruiseTripName={cruiseTripName}
+                                setCruiseTripName={setCruiseTripName}
+                                selectedShip={selectedShip}
+                                setSelectedShip={setSelectedShip}
                                 description={description}
                                 setDescription={setDescription}
-                                selectedRoute={selectedTrainer}
-                                setSelectedRoute={setSelectedTrainer}
+                                selectedRoute={selectedRoute}
+                                setSelectedRoute={setSelectedRoute}
+                                planPrice={planPrice}
+                                setPlanPrice={setPlanPrice}
                                 startDate={startDate}
                                 setStartDate={setStartDate}
                                 endDate={endDate}
                                 setEndDate={setEndDate}
                                 particNum={particNum}
                                 setParticNum={setParticNum}
-                                routes={trainers}
-                                ships={classTypes}
+                                routes={routes}
+                                ships={ships}
                             />
                         </div>
                     </div>
@@ -247,4 +250,4 @@ const ClassCreate: React.FC = () => {
     );
 };
 
-export default ClassCreate;
+export default CruiseTripCreate;

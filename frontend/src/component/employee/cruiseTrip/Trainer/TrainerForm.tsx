@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "../../../../component/admin/class/Input";
+import Input from "../Input";
 import { TrainersInterface } from "../../../../interfaces/IRoute";
 
 interface TrainerFormProps {

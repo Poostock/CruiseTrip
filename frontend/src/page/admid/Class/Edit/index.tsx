@@ -1,96 +1,97 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Navbar from "../../../../component/admin/class/Navbar";
-import SideBar from "../../../../component/admin/class/SideBar";
-import Dropzone from "../../../../component/admin/class/Dropzone";
-import Form from "../../../../component/admin/class/EditCruiseTrip/Form";
-import Modal from "../../../../component/admin/class/EditCruiseTrip/Modal";
+import Navbar from "../../../../component/employee/cruiseTrip/Navbar";
+import SideBar from "../../../../component/employee/cruiseTrip/SideBar";
+import Dropzone from "../../../../component/employee/cruiseTrip/Dropzone";
+import Form from "../../../../component/employee/cruiseTrip/EditCruiseTrip/Form";
+import Modal from "../../../../component/employee/cruiseTrip/EditCruiseTrip/Modal";
 import { FaRegSave } from "react-icons/fa";
-import { TrainersInterface } from "../../../../interfaces/IRoute";
+import { RouteInterface } from "../../../../interfaces/IRoute";
 import { ShipInterface } from "../../../../interfaces/IShip";
 import { CruiseTripInterface } from "../../../../interfaces/ICruiseTrip";
 import toast, { Toaster } from "react-hot-toast";
 import imageCompression from "browser-image-compression";
-import { GetClassById, UpdateClass } from "../../../../service/https/cruiseTrip";
-import { GetClassTypes } from "../../../../service/https/cruiseTrip/ship";
-import { GetTrainers } from "../../../../service/https/cruiseTrip/trainer";
+import { GetCruiseTripById, UpdateCruiseTrip } from "../../../../service/https/cruiseTrip";
+import { GetShips } from "../../../../service/https/cruiseTrip/ship";
+import { GetRoutes } from "../../../../service/https/cruiseTrip/route";
 
-const EditClass: React.FC = () => {
-    const { classID } = useParams<{ classID: string }>();
+const EditCruiseTrip: React.FC = () => {
+    const { cruiseTripID } = useParams<{ cruiseTripID: string }>();
     const navigate = useNavigate();
-    const [className, setClassName] = useState<string>("");
-    const [trainers, setTrainers] = useState<TrainersInterface[]>([]);
-    const [selectedTrainer, setSelectedTrainer] = useState<number | undefined>(undefined);
-    const [selectedType, setSelectedType] = useState<number | undefined>(undefined);
+    const [cruiseTripName, setCruiseTripName] = useState<string>("");
+    const [routes, setRoutes] = useState<RouteInterface[]>([]);
+    const [selectedRoute, setSelectedRoute] = useState<number | undefined>(undefined);
+    const [selectedShip, setSelectedShip] = useState<number | undefined>(undefined);
     const [startDate, setStartDate] = useState<Date | null>(null);
     const [endDate, setEndDate] = useState<Date | null>(null);
     const [description, setDescription] = useState<string>("");
-    const [classPic, setClassPic] = useState<File | null>(null);
-    const [classPicURL, setClassPicURL] = useState<string>("");
+    const [planImg, setPlanImg] = useState<File | null>(null);
+    const [planPicURL, setPlanPicURL] = useState<string>("");
+    const [planPrice, setPlanPrice] = useState<number | undefined>(undefined);
     const [particNum, setParticNum] = useState<number | undefined>(undefined);
     const [ships, setShips] = useState<ShipInterface[]>([]);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
 
-    const fetchClassTypes = useCallback(async () => {
+    const fetchShips = useCallback(async () => {
         try {
-            const res = await GetClassTypes();
-            if (res) setClassTypes(res);
+            const res = await GetShips();
+            if (res) setShips(res);
         } catch (error) {
-            console.error("Failed to fetch ClassTypes", error);
+            console.error("Failed to fetch Ship", error);
         }
     }, []);
 
-    const fetchTrainers = useCallback(async () => {
+    const fetchRoutes = useCallback(async () => {
         try {
-            const res = await GetTrainers();
-            if (res) setTrainers(res);
+            const res = await GetRoutes();
+            if (res) setRoutes(res);
         } catch (error) {
-            console.error("Failed to fetch Trainers", error);
+            console.error("Failed to fetch Routes", error);
         }
     }, []);
 
-    const fetchClassDetails = useCallback(async () => {
+    const fetchCruiseTripDetails = useCallback(async () => {
         try {
-            if (!classID) return;
-            const res = await GetClassById(Number(classID));
+            if (!cruiseTripID) return;
+            const res = await GetCruiseTripById(Number(cruiseTripID));
             if (res) {
-                setClassName(res.ClassName || "");
-                setSelectedTrainer(res.TrainerID);
-                setSelectedType(res.ClassTypeID);
+                setCruiseTripName(res.ClassName || "");
+                setSelectedRoute(res.RouteID);
+                setSelectedShip(res.ShipID);
                 setStartDate(res.StartDate ? new Date(res.StartDate) : null);
                 setEndDate(res.EndDate ? new Date(res.EndDate) : null);
                 setDescription(res.Deets || "");
-                setClassPicURL(res.ClassPic || "");
+                setPlanPicURL(res.ClassPic || "");
                 setParticNum(res.ParticNum || undefined);
             }
         } catch (error) {
             console.error("Failed to fetch class details", error);
         }
-    }, [classID]);
+    }, [cruiseTripID]);
 
     const handleSave = async () => {
         setConfirmLoading(true);
 
         const delayedUpdateClass = new Promise<boolean>((resolve, reject) => {
-            const updateClassAsync = async () => {
+            const updateCruiseTripAsync = async () => {
                 try {
                     const adminID = localStorage.getItem("id");
                     const adminIDNumber = adminID ? Number(adminID) : 1;
-                    const updatedClass: ClassesInterface = {
-                        ID: Number(classID),
-                        ClassName: className,
+                    const updatedClass: CruiseTripInterface = {
+                        ID: Number(cruiseTripID),
+                        CruiseTripName: cruiseTripName,
                         Deets: description,
-                        TrainerID: selectedTrainer,
-                        ClassPic: classPic ? await getBase64(classPic) : classPicURL,
+                        RouteID: selectedRoute,
+                        PlanImg: planImg ? await getBase64(planImg) : planPicURL,
                         ParticNum: particNum,
                         StartDate: startDate ? new Date(startDate) : undefined,
                         EndDate: endDate ? new Date(endDate) : undefined,
-                        ClassTypeID: selectedType,
-                        AdminID: adminIDNumber,
+                        ShipID: selectedShip,
+                        EmployeeID: adminIDNumber,
                     };
 
-                    const res = await UpdateClass(updatedClass);
+                    const res = await UpdateCruiseTrip(updatedClass);
                     if (res) {
                         resolve(true);
                     } else {
@@ -101,7 +102,7 @@ const EditClass: React.FC = () => {
                 }
             };
 
-            updateClassAsync();
+            updateCruiseTripAsync();
         });
 
         toast.promise(delayedUpdateClass, {
@@ -135,10 +136,10 @@ const EditClass: React.FC = () => {
 
             try {
                 const compressedFile = await imageCompression(file, options);
-                setClassPic(compressedFile);
+                setPlanImg(compressedFile);
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    setClassPicURL(reader.result as string);
+                    setPlanPicURL(reader.result as string);
                 };
                 reader.readAsDataURL(compressedFile);
             } catch (error) {
@@ -157,28 +158,28 @@ const EditClass: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchClassTypes();
-        fetchTrainers();
-        fetchClassDetails();
-    }, [fetchClassTypes, fetchTrainers, fetchClassDetails]);
+        fetchShips();
+        fetchRoutes();
+        fetchCruiseTripDetails();
+    }, [fetchShips, fetchRoutes, fetchCruiseTripDetails]);
 
     useEffect(() => {
-        if (trainers.length > 0 && selectedTrainer === undefined) {
-            setSelectedTrainer(trainers[0].ID);
+        if (routes.length > 0 && selectedRoute === undefined) {
+            setSelectedRoute(routes[0].ID);
         }
-    }, [trainers, selectedTrainer]);
+    }, [routes, selectedRoute]);
 
     useEffect(() => {
-        if (classTypes.length > 0 && selectedType === undefined) {
-            setSelectedType(classTypes[0].ID);
+        if (ships.length > 0 && selectedShip === undefined) {
+            setSelectedShip(ships[0].ID);
         }
-    }, [classTypes, selectedType]);
+    }, [ships, selectedShip]);
 
     return (
         <div className="flex">
             <SideBar />
             <div className="bg-white w-full">
-                <Navbar title="Class" />
+                <Navbar title="CruiseTrip" />
                 <div className="navbar bg-white h-[76px] flex items-center">
                     <h1 className="text-3xl text-black ml-14 mt-5">แก้ไขทริปเรือ</h1>
                     <button
@@ -195,17 +196,19 @@ const EditClass: React.FC = () => {
                 <div className="flex flex-wrap justify-center">
                     <div className="bg-gray4 mt-5 w-[1000px] h-[480px] rounded-3xl overflow-auto scrollable-div flex justify-center">
                         <div className="flex  ">
-                            <div className="pt-10"><Dropzone onDrop={handleDrop} classPicURL={classPicURL} /></div>
+                            <div className="pt-10"><Dropzone onDrop={handleDrop} planPicURL={planPicURL} /></div>
                             
                             <Form
-                                className={className}
-                                setClassName={setClassName}
-                                trainers={trainers}
-                                selectedTrainer={selectedTrainer}
-                                setSelectedTrainer={setSelectedTrainer}
-                                classTypes={classTypes}
-                                selectedType={selectedType}
-                                setSelectedType={setSelectedType}
+                                cruiseTripName={cruiseTripName}
+                                setCruiseTripName={setCruiseTripName}
+                                routes={routes}
+                                selectedRoute={selectedRoute}
+                                setSelectedRoute={setSelectedRoute}
+                                ships={ships}
+                                selectedShip={selectedShip}
+                                setSelectedShip={setSelectedShip}
+                                planPrice={planPrice}
+                                setPlanPrice ={setPlanPrice}
                                 description={description}
                                 setDescription={setDescription}
                                 startDate={startDate}
@@ -220,11 +223,11 @@ const EditClass: React.FC = () => {
                 </div>
             </div>
             <Modal title="Confirm Save" visible={modalVisible} onOk={handleSave} onCancel={handleCancel} confirmLoading={confirmLoading}>
-                <p>Are you sure you want to Update this class?</p>
+                <p>Are you sure you want to Update this cruise trip?</p>
             </Modal>
             <Toaster />
         </div>
     );
 };
 
-export default EditClass;
+export default EditCruiseTrip;

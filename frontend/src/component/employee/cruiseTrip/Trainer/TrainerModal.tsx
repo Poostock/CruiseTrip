@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import { TrainersInterface } from "../../../../interfaces/IRoute";
 import toast from "react-hot-toast";
-import { CreateTrainer, DeleteTrainerByID, UpdateTrainer } from "../../../../service/https/cruiseTrip/trainer";
+import { CreateTrainer, DeleteTrainerByID, UpdateTrainer } from "../../../../service/https/cruiseTrip/route";
 
 interface TrainerModalProps {
     isOpen: boolean;

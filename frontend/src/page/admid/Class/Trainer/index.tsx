@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
 import "../../../../App.css";
-import SideBar from "../../../../component/admin/class/SideBar";
-import Navbar from "../../../../component/admin/class/Navbar";
-import Modal from "../../../../component/admin/class/Trainer/Modal";
-import { TrainersInterface } from "../../../../interfaces/IRoute";
+import SideBar from "../../../../component/employee/cruiseTrip/SideBar";
+import Navbar from "../../../../component/employee/cruiseTrip/Navbar";
+import Modal from "../../../../component/employee/cruiseTrip/Trainer/Modal";
+import { RouteInterface } from "../../../../interfaces/IRoute";
 import { GrAddCircle } from "react-icons/gr";
 import toast, { Toaster } from "react-hot-toast";
-import { DeleteTrainerByID, UpdateTrainer, CreateTrainer, GetTrainers } from "../../../../service/https/cruiseTrip/trainer";
+import { DeleteRouteByID, UpdateRoute, CreateRoute, GetRoutes } from "../../../../service/https/cruiseTrip/route";
 
-const Trainer: React.FC = () => {
+const Route: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [trainerToDelete, setTrainerToDelete] = useState<number | null>(null);
     const [trainerNameToDelete, setTrainerNameToDelete] = useState<string>("");
 
-    const [trainerToEdit, setTrainerToEdit] = useState<TrainersInterface | null>(null);
-    const [trainers, setTrainers] = useState<TrainersInterface[]>([]);
+    const [trainerToEdit, setTrainerToEdit] = useState<RouteInterface | null>(null);
+    const [trainers, setTrainers] = useState<RouteInterface[]>([]);
     const [name, setName] = useState("");
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
-    const openEditModal = (trainer: TrainersInterface) => {
+    const openEditModal = (trainer: RouteInterface) => {
         setTrainerToEdit(trainer);
         setName(trainer.Name || ""); // Initialize name for editing
         setIsEditModalOpen(true);
@@ -39,7 +39,7 @@ const Trainer: React.FC = () => {
     const handleDelete = async () => {
         if (trainerToDelete !== null) {
             try {
-                await DeleteTrainerByID(trainerToDelete);
+                await DeleteRouteByID(trainerToDelete);
                 toast.success(`Trainer "${trainerNameToDelete}" has been deleted successfully.`);
                 fetchTrainers();
             } catch {
@@ -57,9 +57,9 @@ const Trainer: React.FC = () => {
 
         if (trainerToEdit) {
             // Update trainer
-            const data: TrainersInterface = { ID: trainerToEdit.ID, Name: name };
+            const data: RouteInterface = { ID: trainerToEdit.ID, Name: name };
             try {
-                await UpdateTrainer(data);
+                await UpdateRoute(data);
                 toast.success("Updated trainer successfully!");
                 fetchTrainers();
                 closeEditModal();
@@ -68,9 +68,9 @@ const Trainer: React.FC = () => {
             }
         } else {
             // Create new trainer
-            const data: TrainersInterface = { Name: name };
+            const data: RouteInterface = { Name: name };
             try {
-                await CreateTrainer(data);
+                await CreateRoute(data);
                 toast.success("Added trainer successfully!");
                 fetchTrainers();
                 closeModal();
@@ -82,7 +82,7 @@ const Trainer: React.FC = () => {
 
     const fetchTrainers = async () => {
         try {
-            const res = await GetTrainers();
+            const res = await GetRoutes();
             if (res) setTrainers(res);
         } catch (error) {
             console.error("Failed to fetch trainers", error);
@@ -114,7 +114,7 @@ const Trainer: React.FC = () => {
                     <div className="text-white bg-black flex justify-center">
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
                             {trainers.map((trainer) => {
-                                const base64String = trainer.TrainerPic || "";
+                                const base64String = "";
                                 const imageSrc = base64String.startsWith("data:image/")
                                     ? base64String
                                     : `data:image/jpeg;base64,${base64String}`;
@@ -177,4 +177,4 @@ const Trainer: React.FC = () => {
     );
 };
 
-export default Trainer;
+export default Route;

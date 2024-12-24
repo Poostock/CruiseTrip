@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Modal from "../../../../component/admin/class/Ship/Modal";
-import SideBar from "../../../../component/admin/class/SideBar";
-import Navbar from "../../../../component/admin/class/Navbar";
+import Modal from "../../../../component/employee/cruiseTrip/Ship/Modal";
+import SideBar from "../../../../component/employee/cruiseTrip/SideBar";
+import Navbar from "../../../../component/employee/cruiseTrip/Navbar";
 import { GrAddCircle } from "react-icons/gr";
 import toast, { Toaster } from "react-hot-toast";
 import { ShipInterface } from "../../../../interfaces/IShip";
 import { DeleteShipsByID, GetShips } from "../../../../service/https/cruiseTrip/ship";
-import ShipTable from "../../../../component/admin/class/Ship/ShipTable";
+import ShipTable from "../../../../component/employee/cruiseTrip/Ship/ShipTable";
 
 // Utility for modal management
 const useModal = () => {

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../../../../App.css";
-import Input from "../../../../component/admin/class/Input";
+import Input from "../Input";
 import toast from "react-hot-toast";
-import { TrainersInterface } from "../../../../interfaces/IRoute";
-import { CreateTrainer, UpdateTrainer } from "../../../../service/https/cruiseTrip/trainer";
+import { RouteInterface } from "../../../../interfaces/IRoute";
+import { CreateRoute, UpdateRoute } from "../../../../service/https/cruiseTrip/route";
 
 interface ModalProps {
     isOpen: boolean;
@@ -13,7 +13,7 @@ interface ModalProps {
     title: string;
     type?: "delete" | "create" | "edit";
     trainerName?: string;
-    trainer?: TrainersInterface | null;
+    trainer?: RouteInterface | null;
     fetchTrainers?: () => void;
 }
 
@@ -42,11 +42,11 @@ const Modal: React.FC<ModalProps> = ({
                 toast.error("Please enter a name.");
                 return;
             }
-            const data: TrainersInterface = { Name: name };
+            const data: RouteInterface = { Name: name };
             const createTrainerPromise = new Promise((resolve, reject) => {
                 setTimeout(async () => {
                     try {
-                        await CreateTrainer(data);
+                        await CreateRoute(data);
                         resolve("Add trainer successfully!");
                     } catch {
                         reject("Failed to add trainer.");
@@ -73,11 +73,11 @@ const Modal: React.FC<ModalProps> = ({
                 toast.error("Please enter a name.");
                 return;
             }
-            const data: TrainersInterface = { ID: trainer.ID, Name: name };
+            const data: RouteInterface = { ID: trainer.ID, Name: name };
             const editTrainerPromise = new Promise((resolve, reject) => {
                 setTimeout(async () => {
                     try {
-                        await UpdateTrainer(data);
+                        await UpdateRoute(data);
                         resolve("Updated trainer successfully!");
                     } catch {
                         reject("Failed to update trainer.");

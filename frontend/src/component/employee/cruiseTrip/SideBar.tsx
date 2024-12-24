@@ -1,6 +1,5 @@
 import "../../../App.css";
 import { useState } from "react";
-import { IoIosFitness } from "react-icons/io";
 import { BsArrowLeftShort, BsChevronDown } from "react-icons/bs";
 import { RiDashboardFill } from "react-icons/ri";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
@@ -27,9 +26,9 @@ const SideBar: React.FC = () => {
         {
             title: "ทริปเรือ",
             icon: <GiCruiser />,
-            link: "/class",
+            link: "/cruiseTrip",
             submenu: [
-                { title: "เรือ", icon: <FaRegDotCircle />, link: "/class/classType" },
+                { title: "เรือ", icon: <FaRegDotCircle />, link: "/cruiseTrip/ship" },
             ],
         },
         
