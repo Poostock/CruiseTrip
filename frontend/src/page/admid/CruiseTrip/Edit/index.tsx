@@ -78,24 +78,24 @@ const EditCruiseTrip: React.FC = () => {
                 try {
                     const adminID = localStorage.getItem("id");
                     const adminIDNumber = adminID ? Number(adminID) : 1;
-                    const updatedClass: CruiseTripInterface = {
-                        ID: Number(cruiseTripID),
+                    const updateTrip: CruiseTripInterface = {
                         CruiseTripName: cruiseTripName,
                         Deets: description,
                         RouteID: selectedRoute,
                         PlanImg: planImg ? await getBase64(planImg) : planPicURL,
                         ParticNum: particNum,
+                        PlanPrice: planPrice,
                         StartDate: startDate ? new Date(startDate) : undefined,
                         EndDate: endDate ? new Date(endDate) : undefined,
                         ShipID: selectedShip,
                         EmployeeID: adminIDNumber,
                     };
 
-                    const res = await UpdateCruiseTrip(updatedClass);
+                    const res = await UpdateCruiseTrip(updateTrip);
                     if (res) {
                         resolve(true);
                     } else {
-                        reject(new Error("Failed to update class."));
+                        reject(new Error("Failed to update cruisetrip."));
                     }
                 } catch (error) {
                     reject(error);
@@ -106,16 +106,16 @@ const EditCruiseTrip: React.FC = () => {
         });
 
         toast.promise(delayedUpdateClass, {
-            loading: "Updating class...",
-            success: "Class updated successfully!",
-            error: "Failed to update class.",
+            loading: "Updating cruise trip...",
+            success: "Cruise trip updated successfully!",
+            error: "Failed to update cruise trip.",
         });
 
         try {
             await delayedUpdateClass;
-            navigate("/class");
+            navigate("/cruiseTrip");
         } catch (error) {
-            console.error("Error updating class:", error);
+            console.error("Error updating cruise trip:", error);
         } finally {
             setConfirmLoading(false);
             setModalVisible(false);

@@ -26,14 +26,15 @@ interface Route {
 interface CruiseTrip {
     ID: number;
     CruiseTripName: string;
-    PlanImg: string;
     Deets: string;
-    StartDate: string;
-    EndDate: string;
+    StartDate: Date;
+    EndDate: Date;
     Route: Route;
-    ParticNum: number;
+    PlanImg: string;
     PlanPrice: number;
+    ParticNum: number;
     Ship: Ship;
+    // Employee: number;
 }
 
 const CruiseTrip: React.FC = () => {
@@ -44,9 +45,14 @@ const CruiseTrip: React.FC = () => {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+        fetchCruiseTrips();
+    }, []);
+    
     const fetchCruiseTrips = async () => {
         try {
             const res = await GetCruiseTrips();
+            console.log("CruiseTrips:", res); // ตรวจสอบข้อมูลที่โหลด
             if (res) {
                 setCruiseTrips(res);
             }
@@ -54,6 +60,7 @@ const CruiseTrip: React.FC = () => {
             console.error("Failed to fetch cruise trips", error);
         }
     };
+    
 
     const handleEditClick = (id: number) => {
         navigate(`/cruiseTrip/edit/${id}`);

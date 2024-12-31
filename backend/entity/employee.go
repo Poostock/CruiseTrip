@@ -24,14 +24,14 @@ type Employees struct {
 	GenderID uint
 	Gender   *Genders `gorm:"foreignKey:GenderID"`
 
-	RoleID uint
-	Role   *Roles `gorm:"foreignKey:RoleID"`
+	// RoleID uint
+	// Role   *Roles `gorm:"foreignKey:RoleID"`
 
-	StatusID uint
-	Status   *Status `gorm:"foreignKey:StatusID"`
+	// StatusID uint
+	// Status   *Status `gorm:"foreignKey:StatusID"`
 
-	ShipID uint
-	Ship   *Ship `gorm:"foreignKey:ShipID"`
+	// ShipID uint
+	// Ship   *Ship `gorm:"foreignKey:ShipID"`
 
 	CruiseTrip []CruiseTrip `gorm:"foreignKey:EmployeesID"`
 }

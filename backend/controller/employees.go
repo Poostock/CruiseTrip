@@ -27,28 +27,28 @@ func CreateAdmin(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "gender not found"})
 		return
 	}
-	var ship entity.Ship
-    db.First(&ship, admin.ShipID)
-    if ship.ID == 0 {
-        c.JSON(http.StatusNotFound, gin.H{"error": "ship not found"})
-        return
-    }
+	// var ship entity.Ship
+    // db.First(&ship, admin.ShipID)
+    // if ship.ID == 0 {
+    //     c.JSON(http.StatusNotFound, gin.H{"error": "ship not found"})
+    //     return
+    // }
 
-    // // Validate route
-    var status entity.Status
-    db.First(&status, admin.StatusID)
-    if status.ID == 0 {
-        c.JSON(http.StatusNotFound, gin.H{"error": "status not found"})
-        return
-    }
+    // // // Validate route
+    // var status entity.Status
+    // db.First(&status, admin.StatusID)
+    // if status.ID == 0 {
+    //     c.JSON(http.StatusNotFound, gin.H{"error": "status not found"})
+    //     return
+    // }
 
-    // Validate admin
-    var role entity.Roles
-    db.First(&role, admin.RoleID)
-    if role.ID == 0 {
-        c.JSON(http.StatusNotFound, gin.H{"error": "role not found"})
-        return
-    }
+    // // Validate admin
+    // var role entity.Roles
+    // db.First(&role, admin.RoleID)
+    // if role.ID == 0 {
+    //     c.JSON(http.StatusNotFound, gin.H{"error": "role not found"})
+    //     return
+    // }
 
 
 	// เข้ารหัสลับรหัสผ่านที่ผู้ใช้กรอกก่อนบันทึกลงฐานข้อมูล
@@ -70,14 +70,14 @@ func CreateAdmin(c *gin.Context) {
 		GenderID:  admin.GenderID,  // ID ของเพศ
 		Gender:    &gender,          // โยงความสัมพันธ์กับเพศ
 	
-		RoleID:    admin.RoleID,    // ID ของบทบาท
-		Role:      &role,            // โยงความสัมพันธ์กับบทบาท
+		// RoleID:    admin.RoleID,    // ID ของบทบาท
+		// Role:      &role,            // โยงความสัมพันธ์กับบทบาท
 	
-		StatusID:  admin.StatusID,  // ID ของสถานะ
-		Status:    &status,          // โยงความสัมพันธ์กับสถานะ
+		// StatusID:  admin.StatusID,  // ID ของสถานะ
+		// Status:    &status,          // โยงความสัมพันธ์กับสถานะ
 	
-		ShipID:    admin.ShipID,    // ID ของเรือ
-		Ship:      &ship,            // โยงความสัมพันธ์กับเรือ
+		// ShipID:    admin.ShipID,    // ID ของเรือ
+		// Ship:      &ship,            // โยงความสัมพันธ์กับเรือ
 	}
 	
 

@@ -62,25 +62,26 @@ const CruiseTripCreate: React.FC = () => {
         setConfirmLoading(true);
         const errors: string[] = [];
 
-        if (!cruiseTripName) errors.push("Please enter the class name.");
-        if (!planImg) errors.push("Please upload a class picture.");
-        if (!selectedShip) errors.push("Please select a class type.");
+        if (!cruiseTripName) errors.push("Please enter the trip name.");
+        if (!planImg) errors.push("Please upload a trip picture.");
+        if (!selectedShip) errors.push("Please select a ship.");
         if (!description) errors.push("Please enter a description.");
-        if (!selectedRoute) errors.push("Please select a trainer.");
+        if (!selectedRoute) errors.push("Please select a route.");
+        if (!planPrice) errors.push("Please enter the price.");
         if (!startDate) errors.push("Please select a start date.");
         if (!endDate) errors.push("Please select an end date.");
         if (particNum === undefined) errors.push("Please enter the number of attendees.");
 
         if (startDate && endDate) {
-            const startDay = startDate.getDate();
-            const startMonth = startDate.getMonth();
+            // const startDay = startDate.getDate();
+            // const startMonth = startDate.getMonth();
             const startYear = startDate.getFullYear();
 
-            const endDay = endDate.getDate();
-            const endMonth = endDate.getMonth();
+            // const endDay = endDate.getDate();
+            // const endMonth = endDate.getMonth();
             const endYear = endDate.getFullYear();
 
-            if (startDay !== endDay || startMonth !== endMonth || startYear !== endYear) {
+            if (startYear !== endYear) {
                 errors.push("Start date and end date must be on the same day.");
             } else {
                 const startTime = startDate.getTime();
@@ -105,32 +106,33 @@ const CruiseTripCreate: React.FC = () => {
         try {
             const adminID = localStorage.getItem("id");
             const adminIDNumber = adminID ? Number(adminID) : 1;
-            const newClass: CruiseTripInterface = {
+            const newTrip: CruiseTripInterface = {
                 CruiseTripName: cruiseTripName,
                 Deets: description,
                 RouteID: selectedRoute,
                 PlanImg: planImg ? await getBase64(planImg) : planPicURL,
                 ParticNum: particNum,
+                PlanPrice: planPrice,
                 StartDate: startDate ? new Date(startDate) : undefined,
                 EndDate: endDate ? new Date(endDate) : undefined,
                 ShipID: selectedShip,
                 EmployeeID: adminIDNumber,
             };
 
-            console.log("Creating class with data:", newClass);
+            console.log("Creating cruise trip with data:", newTrip);
 
-            const res = await CreateCruiseTrip(newClass);
+            const res = await CreateCruiseTrip(newTrip);
             if (res) {
                 setTimeout(() => {
-                    toast.success("Class created successfully!");
+                    toast.success("CruiseTrip created successfully!");
                 }, 1000);
-                navigate("/class");
+                navigate("/cruiseTrip");
             } else {
-                toast.error("Failed to create class.");
+                toast.error("Failed to create cruise trip.");
             }
         } catch (error) {
-            console.error("Error creating class:", error);
-            toast.error("Failed to create class.");
+            console.error("Error creating cruise trip:", error);
+            toast.error("Failed to create cruise trip.");
         } finally {
             setConfirmLoading(false);
             setModalVisible(false);
@@ -203,7 +205,7 @@ const CruiseTripCreate: React.FC = () => {
         <div className="flex">
             <SideBar />
             <div className="bg-white w-full">
-                <Navbar title="Class" />
+                <Navbar title="Cruise trip" />
                 <div>
                     <div className="navbar bg-white h-[76px] flex items-center">
                         <h1 className="text-3xl text-black ml-14 mt-2">สร้างทริป</h1>

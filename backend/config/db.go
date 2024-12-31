@@ -32,8 +32,8 @@ func SetupDatabase() {
 		&entity.Ship{},
 		&entity.CruiseTrip{},
 		&entity.Routes{},
-		&entity.Roles{},
-		&entity.Status{},
+		// &entity.Roles{},
+		// &entity.Status{},
 	)
 
 	GenderMale := entity.Genders{Gender: "Male"}
@@ -54,6 +54,12 @@ func SetupDatabase() {
 	db.FirstOrCreate(&ShipArvia, &entity.Ship{Name: "Arvia"})
 	db.FirstOrCreate(&ShipCarnival, &entity.Ship{Name: "Carnival Celebration"})
 
+	// RoleSoilder := entity.Roles{Role: "soilder"}
+	// RoleCaptain := entity.Roles{Role: "captain"}
+
+	// db.FirstOrCreate(&RoleSoilder, &entity.Routes{Name: "soilder"})
+	// db.FirstOrCreate(&RoleCaptain, &entity.Routes{Name: "captain"})
+
 	hashedPasswordAd, _ := HashPassword("123456")
 
 	Admin := entity.Employees{
@@ -68,8 +74,9 @@ func SetupDatabase() {
 		Salary:    50000.0,
 		Picture:   "https://example.com/picture.jpg",
 		GenderID:  2, // เพศหญิง
-		RoleID:    1, // บทบาท (เช่น Admin)
-		StatusID:  1, // สถานะ (เช่น Active)
+		// RoleID:    1, // บทบาท (เช่น Admin)
+		// StatusID:  1, // สถานะ (เช่น Active)
+		// ShipID:	   1,
 	}
 
 	db.FirstOrCreate(&Admin, entity.Employees{

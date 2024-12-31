@@ -33,7 +33,7 @@ func main() {
 		{
 
 		// Gender Routes
-		router.GET("/genders", controller.GetAll)
+		router.GET("/genders", controller.ListGenders)
 		// CruiseTrip Routes
 		router.GET("/cruisetrips", controller.ListCruiseTrips)
 		router.GET("/cruisetrip/:id", controller.GetCruiseTrip)
@@ -48,17 +48,17 @@ func main() {
 		router.PATCH("/ships", controller.UpdateShip)
 		router.DELETE("/ships/:id", controller.DeleteShip)
 		// Route Routes
-		// router.GET("/routes", controller.ListRoutes)
-		router.GET("/route/:id", controller.GetAll)
-		// router.POST("/routes", controller.CreateRoute)
-		router.PATCH("/routes", controller.Update)
-		router.DELETE("/routes/:id", controller.Delete)
+		router.GET("/routes", controller.ListRoutes)
+		router.GET("/route/:id", controller.GetRoutes)
+		router.POST("/routes", controller.CreateRoute)
+		router.PATCH("/routes", controller.UpdateRoute)
+		router.DELETE("/routes/:id", controller.DeleteRoute)
 		// Employee Routes
-		// router.GET("/employees", controller.ListAdmins)
-		router.GET("/employee/:id", controller.GetAll)
-		// router.POST("/employees", controller.CreateAdmin)
-		router.PATCH("/employees", controller.Update)
-		router.DELETE("/employees/:id", controller.Delete)
+		router.GET("/employees", controller.ListAdmins)
+		router.GET("/employee/:id", controller.GetAdmin)
+		router.POST("/employees", controller.CreateAdmin)
+		router.PATCH("/employees", controller.UpdateAdmin)
+		router.DELETE("/employees/:id", controller.DeleteAdmin)
 
 		//Count Staff
 		// router.GET("/staffs/count", controller.CountStaffs)

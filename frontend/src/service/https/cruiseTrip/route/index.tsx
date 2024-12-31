@@ -8,52 +8,86 @@ const fetchData = async (url: string, options: RequestInit) => {
         const response = await fetch(url, options);
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            console.error(`HTTP error! Status: ${response.status}`);
+            return null;
         }
 
-        return response.status === 204 ? true : await response.json();
+        return response.status === 204 ? null : await response.json();
     } catch (error) {
         console.error("Fetch error:", error);
-        return false;
+        return null;
     }
 };
 
 // Fetch all routes
 async function GetRoutes() {
-    return await fetchData(`${apiUrl}/routes`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-    });
+    try {
+        return await fetchData(`${apiUrl}/routes`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        });
+    } catch (error) {
+        console.error("Error fetching routes:", error);
+        return null;
+    }
 }
 
 // Fetch a specific route by ID
 async function GetRouteById(id: number | undefined) {
-    if (id === undefined) return false;
-    return await fetchData(`${apiUrl}/route/${id}`, { method: "GET" });
+    if (id === undefined) {
+        console.error("Invalid ID: undefined");
+        return null;
+    }
+
+    try {
+        return await fetchData(`${apiUrl}/route/${id}`, { method: "GET" });
+    } catch (error) {
+        console.error(`Error fetching route with ID ${id}:`, error);
+        return null;
+    }
 }
 
 // Create a new route
 async function CreateRoute(data: RouteInterface) {
-    return await fetchData(`${apiUrl}/routes`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-    });
+    try {
+        return await fetchData(`${apiUrl}/routes`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+    } catch (error) {
+        console.error("Error creating route:", error);
+        return null;
+    }
 }
 
 // Update an existing route
 async function UpdateRoute(data: RouteInterface) {
-    return await fetchData(`${apiUrl}/routes`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-    });
+    try {
+        return await fetchData(`${apiUrl}/routes`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+        });
+    } catch (error) {
+        console.error("Error updating route:", error);
+        return null;
+    }
 }
 
 // Delete a specific route by ID
 async function DeleteRouteByID(id: number | undefined) {
-    if (id === undefined) return false;
-    return await fetchData(`${apiUrl}/routes/${id}`, { method: "DELETE" });
+    if (id === undefined) {
+        console.error("Invalid ID: undefined");
+        return null;
+    }
+
+    try {
+        return await fetchData(`${apiUrl}/routes/${id}`, { method: "DELETE" });
+    } catch (error) {
+        console.error(`Error deleting route with ID ${id}:`, error);
+        return null;
+    }
 }
 
 export { GetRoutes, GetRouteById, CreateRoute, UpdateRoute, DeleteRouteByID };

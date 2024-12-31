@@ -25,7 +25,7 @@ async function GetCruiseTrips() {
         },
     };
 
-    return await fetchData(`${apiUrl}/cruiseTrips`, requestOptions);
+    return await fetchData(`${apiUrl}/cruisetrips`, requestOptions);
 }
 
 async function GetCruiseTripById(id: number | undefined) {
@@ -35,7 +35,7 @@ async function GetCruiseTripById(id: number | undefined) {
         method: "GET",
     };
 
-    return await fetchData(`${apiUrl}/cruiseTrips/${id}`, requestOptions);
+    return await fetchData(`${apiUrl}/cruisetrip/${id}`, requestOptions);
 }
 
 async function CreateCruiseTrip(data: CruiseTripInterface) {
@@ -45,7 +45,7 @@ async function CreateCruiseTrip(data: CruiseTripInterface) {
         body: JSON.stringify(data),
     };
 
-    return await fetchData(`${apiUrl}/cruiseTrips`, requestOptions);
+    return await fetchData(`${apiUrl}/cruisetrips`, requestOptions);
 }
 
 async function UpdateCruiseTrip(data: CruiseTripInterface) {
@@ -55,7 +55,7 @@ async function UpdateCruiseTrip(data: CruiseTripInterface) {
         body: JSON.stringify(data),
     };
 
-    return await fetchData(`${apiUrl}/cruiseTrips`, requestOptions);
+    return await fetchData(`${apiUrl}/cruisetrips`, requestOptions);
 }
 
 async function DeleteCruiseTripByID(id: number | undefined) {
@@ -65,7 +65,7 @@ async function DeleteCruiseTripByID(id: number | undefined) {
         method: "DELETE",
     };
 
-    return await fetchData(`${apiUrl}/cruiseTrips/${id}`, requestOptions);
+    return await fetchData(`${apiUrl}/cruisetrips/${id}`, requestOptions);
 }
 
 

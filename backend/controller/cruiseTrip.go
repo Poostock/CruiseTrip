@@ -35,7 +35,7 @@ func CreateCruiseTrip(c *gin.Context) {
     var ship entity.Ship
     db.First(&ship, cruisetrip.ShipID)
     if ship.ID == 0 {
-        c.JSON(http.StatusNotFound, gin.H{"error": "classType not found"})
+        c.JSON(http.StatusNotFound, gin.H{"error": "Ship not found"})
         return
     }
 
@@ -43,7 +43,7 @@ func CreateCruiseTrip(c *gin.Context) {
     var route entity.Routes
     db.First(&route, cruisetrip.RoutesID)
     if route.ID == 0 {
-        c.JSON(http.StatusNotFound, gin.H{"error": "trainer not found"})
+        c.JSON(http.StatusNotFound, gin.H{"error": "Route not found"})
         return
     }
 
@@ -51,7 +51,7 @@ func CreateCruiseTrip(c *gin.Context) {
     var employee entity.Employees
     db.First(&employee, cruisetrip.EmployeesID)
     if employee.ID == 0 {
-        c.JSON(http.StatusNotFound, gin.H{"error": "admin not found"})
+        c.JSON(http.StatusNotFound, gin.H{"error": "Admin not found"})
         return
     }
 
@@ -88,7 +88,7 @@ func GetCruiseTrip(c *gin.Context) {
 	var cruisetrip entity.CruiseTrip
 
 	db := config.DB()
-	results := db.Preload("Ship").Preload("Route").Preload("Employee").First(&cruisetrip, ID)
+	results := db.Preload("Ship").Preload("Route").Preload("Employees").First(&cruisetrip, ID)
 	if results.Error != nil {
         if results.Error == gorm.ErrRecordNotFound {
             c.JSON(http.StatusNotFound, gin.H{"error": "CruiseTrip not found"})
@@ -110,7 +110,7 @@ func ListCruiseTrips(c *gin.Context) {
 	var cruisetrips []entity.CruiseTrip
 
 	db := config.DB()
-	results := db.Preload("Ship").Preload("Route").Preload("Employee").Find(&cruisetrips)
+	results := db.Preload("Ship").Preload("Route").Preload("Employees").Find(&cruisetrips)
 	if results.Error != nil {
         if results.Error == gorm.ErrRecordNotFound {
             c.JSON(http.StatusNotFound, gin.H{"error": "CruiseTrip not found"})
