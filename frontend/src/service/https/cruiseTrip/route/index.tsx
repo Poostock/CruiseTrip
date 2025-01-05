@@ -1,4 +1,4 @@
-import { RouteInterface } from "../../../../interfaces/IRoute";
+import { RoutesInterface } from "../../../../interfaces/IRoute";
 
 const apiUrl = "http://localhost:3036";
 
@@ -48,7 +48,7 @@ async function GetRouteById(id: number | undefined) {
 }
 
 // Create a new route
-async function CreateRoute(data: RouteInterface) {
+async function CreateRoute(data: RoutesInterface) {
     try {
         return await fetchData(`${apiUrl}/routes`, {
             method: "POST",
@@ -62,7 +62,7 @@ async function CreateRoute(data: RouteInterface) {
 }
 
 // Update an existing route
-async function UpdateRoute(data: RouteInterface) {
+async function UpdateRoute(data: RoutesInterface) {
     try {
         return await fetchData(`${apiUrl}/routes`, {
             method: "PATCH",

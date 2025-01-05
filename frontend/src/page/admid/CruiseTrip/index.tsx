@@ -29,12 +29,12 @@ interface CruiseTrip {
     Deets: string;
     StartDate: Date;
     EndDate: Date;
-    Route: Route;
+    Routes: Route;
     PlanImg: string;
     PlanPrice: number;
     ParticNum: number;
     Ship: Ship;
-    // Employee: number;
+    // Employees: Employees;
 }
 
 const CruiseTrip: React.FC = () => {
@@ -143,7 +143,7 @@ const CruiseTrip: React.FC = () => {
                                                 {dayjs.tz(cls.StartDate, "Asia/Bangkok").format("D MMM YYYY")} <br />
                                                 {dayjs(cls.StartDate).format("HH:mm")} - {dayjs(cls.EndDate).format("HH:mm")}
                                             </h4>
-                                            <h5 className="text-green mb-2 text-[20px]">From {cls.Route.Name}</h5>
+                                            <h5 className="text-green mb-2 text-[20px]">From {cls.Routes.Name}</h5>
                                             <h5 className="text-green mb-6 text-[20px]">No. of Attendees {cls.ParticNum || "N/A"}</h5>
                                         </div>
                                     </div>

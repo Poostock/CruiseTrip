@@ -14,7 +14,7 @@ type CruiseTrip struct {
 	StartDate time.Time `valid:"required~เวลาห้ามเป็นอดีต, future~StartDate ต้องเป็นวันที่ในอนาคต"`
 	EndDate   time.Time `valid:"required~เวลาห้ามเป็นอดีต, future~EndDate ต้องเป็นวันที่ในอนาคต"`
 	PlanImg        string `valid:"required~ใส่รูปภาพ, image_valid~ใส่รูปภาพ"`
-	PlanPrice      float64 `valid:"required~กรอกราคาช่วง 1000000 - 1000000, range(1000000|10000000)~กรอกราคาช่วง 1000000 - 1000000"`
+	PlanPrice      float64 `valid:"required~กรอกราคาช่วง 10000 - 1000000, range(10000|10000000)~กรอกราคาช่วง 10000 - 1000000"`
 	ParticNum      int `valid:"required~กรอกตัวเลข, description_valid~ใส่จำนวนคน"`
 
 	ShipID      uint `valid:"required~กรอกชื่อเรือ"`
@@ -23,9 +23,12 @@ type CruiseTrip struct {
 	EmployeesID uint
 	Employees   Employees `gorm:"foreignKey:EmployeesID"`
 
-	RoutesID    uint `valid:"required~กรุณาเลือกเส้นทาง"`
-	Routes      Routes `gorm:"foreignKey:RoutesID"`
+	RoutesID uint `valid:"required~กรุณาเลือกเส้นทาง"`
+	Routes   Routes `gorm:"foreignKey:RoutesID"`
+
 }
+
+
 
 
 func init() {

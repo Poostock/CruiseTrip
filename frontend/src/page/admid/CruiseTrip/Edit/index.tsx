@@ -6,7 +6,7 @@ import Dropzone from "../../../../component/employee/cruiseTrip/Dropzone";
 import Form from "../../../../component/employee/cruiseTrip/EditCruiseTrip/Form";
 import Modal from "../../../../component/employee/cruiseTrip/EditCruiseTrip/Modal";
 import { FaRegSave } from "react-icons/fa";
-import { RouteInterface } from "../../../../interfaces/IRoute";
+import { RoutesInterface } from "../../../../interfaces/IRoute";
 import { ShipInterface } from "../../../../interfaces/IShip";
 import { CruiseTripInterface } from "../../../../interfaces/ICruiseTrip";
 import toast, { Toaster } from "react-hot-toast";
@@ -19,7 +19,7 @@ const EditCruiseTrip: React.FC = () => {
     const { cruiseTripID } = useParams<{ cruiseTripID: string }>();
     const navigate = useNavigate();
     const [cruiseTripName, setCruiseTripName] = useState<string>("");
-    const [routes, setRoutes] = useState<RouteInterface[]>([]);
+    const [routes, setRoutes] = useState<RoutesInterface[]>([]);
     const [selectedRoute, setSelectedRoute] = useState<number | undefined>(undefined);
     const [selectedShip, setSelectedShip] = useState<number | undefined>(undefined);
     const [startDate, setStartDate] = useState<Date | null>(null);
@@ -81,14 +81,14 @@ const EditCruiseTrip: React.FC = () => {
                     const updateTrip: CruiseTripInterface = {
                         CruiseTripName: cruiseTripName,
                         Deets: description,
-                        RouteID: selectedRoute,
+                        RoutesID: selectedRoute,
                         PlanImg: planImg ? await getBase64(planImg) : planPicURL,
                         ParticNum: particNum,
                         PlanPrice: planPrice,
                         StartDate: startDate ? new Date(startDate) : undefined,
                         EndDate: endDate ? new Date(endDate) : undefined,
                         ShipID: selectedShip,
-                        EmployeeID: adminIDNumber,
+                        EmployeesID: adminIDNumber,
                     };
 
                     const res = await UpdateCruiseTrip(updateTrip);

@@ -88,7 +88,7 @@ func GetCruiseTrip(c *gin.Context) {
 	var cruisetrip entity.CruiseTrip
 
 	db := config.DB()
-	results := db.Preload("Ship").Preload("Route").Preload("Employees").First(&cruisetrip, ID)
+	results := db.Preload("Ship").Preload("Routes").Preload("Employees").First(&cruisetrip, ID)
 	if results.Error != nil {
         if results.Error == gorm.ErrRecordNotFound {
             c.JSON(http.StatusNotFound, gin.H{"error": "CruiseTrip not found"})
@@ -110,7 +110,7 @@ func ListCruiseTrips(c *gin.Context) {
 	var cruisetrips []entity.CruiseTrip
 
 	db := config.DB()
-	results := db.Preload("Ship").Preload("Route").Preload("Employees").Find(&cruisetrips)
+	results := db.Preload("Ship").Preload("Routes").Preload("Employees").Find(&cruisetrips)
 	if results.Error != nil {
         if results.Error == gorm.ErrRecordNotFound {
             c.JSON(http.StatusNotFound, gin.H{"error": "CruiseTrip not found"})

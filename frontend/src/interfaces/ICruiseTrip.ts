@@ -4,10 +4,10 @@ export interface CruiseTripInterface {
     Deets?: string;
     StartDate?: Date;
     EndDate?: Date;
-    RouteID?: number;
+    RoutesID?: number;
     PlanImg?: string;
     PlanPrice?: number;
     ParticNum?: number;
     ShipID?: number;
-    EmployeeID?: number;
+    EmployeesID?: number;
 }

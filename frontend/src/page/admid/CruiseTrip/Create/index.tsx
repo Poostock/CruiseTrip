@@ -4,7 +4,7 @@ import SideBar from "../../../../component/employee/cruiseTrip/SideBar";
 import Dropzone from "../../../../component/employee/cruiseTrip/Dropzone";
 import ConfirmModal from "../../../../component/employee/cruiseTrip/CreateCruiseTrip/ConfirmModal";
 import { FaRegSave } from "react-icons/fa";
-import { RouteInterface } from "../../../../interfaces/IRoute";
+import { RoutesInterface } from "../../../../interfaces/IRoute";
 import { ShipInterface } from "../../../../interfaces/IShip";
 import { CruiseTripInterface } from "../../../../interfaces/ICruiseTrip";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ import CruiseTripForm from "../../../../component/employee/cruiseTrip/CreateCrui
 
 const CruiseTripCreate: React.FC = () => {
     const [cruiseTripName, setCruiseTripName] = useState<string>("");
-    const [routes, setRoutes] = useState<RouteInterface[]>([]);
+    const [routes, setRoutes] = useState<RoutesInterface[]>([]);
     const [selectedRoute, setSelectedRoute] = useState<number | undefined>(undefined);
     const [selectedShip, setSelectedShip] = useState<number | undefined>(undefined);
     const [startDate, setStartDate] = useState<Date | null>(null);
@@ -104,20 +104,22 @@ const CruiseTripCreate: React.FC = () => {
         }
 
         try {
-            const adminID = localStorage.getItem("id");
-            const adminIDNumber = adminID ? Number(adminID) : 1;
+            // const adminID = localStorage.getItem("id");
+            // const adminIDNumber = adminID ? Number(adminID) : 1;
+            const adminIDNumber = 1;
             const newTrip: CruiseTripInterface = {
                 CruiseTripName: cruiseTripName,
                 Deets: description,
-                RouteID: selectedRoute,
+                RoutesID: selectedRoute,
                 PlanImg: planImg ? await getBase64(planImg) : planPicURL,
                 ParticNum: particNum,
                 PlanPrice: planPrice,
                 StartDate: startDate ? new Date(startDate) : undefined,
                 EndDate: endDate ? new Date(endDate) : undefined,
                 ShipID: selectedShip,
-                EmployeeID: adminIDNumber,
+                EmployeesID: adminIDNumber,
             };
+            
 
             console.log("Creating cruise trip with data:", newTrip);
 
