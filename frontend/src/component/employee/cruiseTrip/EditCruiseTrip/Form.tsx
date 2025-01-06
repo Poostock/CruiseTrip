@@ -4,14 +4,14 @@ import Input from "../Input";
 import Select from "../Select";
 import Textarea from "../Textarea";
 import DateTimePicker from "../DateTimePicker";
-import { RouteInterface } from "../../../../interfaces/IRoute";
+import { RoutesInterface } from "../../../../interfaces/IRoute";
 import { ShipInterface } from "../../../../interfaces/IShip";
 
 interface FormProps {
     cruiseTripName: string;
     setCruiseTripName: (value: string) => void;
-    routes: RouteInterface[];
-    selectedRoute: number | undefined;
+    routes: RoutesInterface[];
+    selectedRoutes: number | undefined;
     setSelectedRoute: (value: number | undefined) => void;
     ships: ShipInterface[];
     selectedShip: number | undefined;
@@ -32,7 +32,7 @@ const Form: React.FC<FormProps> = ({
     cruiseTripName,
     setCruiseTripName,
     routes,
-    selectedRoute,
+    selectedRoutes,
     setSelectedRoute,
     ships,
     selectedShip,
@@ -69,7 +69,7 @@ const Form: React.FC<FormProps> = ({
                         value: route.ID?.toString() || "",
                         label: route.Name || "Unnamed",
                     }))}
-                    value={selectedRoute?.toString() || ""}
+                    value={selectedRoutes?.toString() || ""}
                     onChange={(value) => setSelectedRoute(value ? Number(value) : undefined)}
                     label="Route"
                 />

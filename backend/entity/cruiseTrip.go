@@ -9,23 +9,22 @@ import (
 
 type CruiseTrip struct {
 	gorm.Model
-	CruiseTripName string `gorm:"uniqueIndex" valid:"required~กรอกชื่อทริป"`
-	Deets          string `valid:"required~ใส่ข้อความ, deets_valid~ใส่ข้อความ"`
-	StartDate time.Time `valid:"required~เวลาห้ามเป็นอดีต, future~StartDate ต้องเป็นวันที่ในอนาคต"`
-	EndDate   time.Time `valid:"required~เวลาห้ามเป็นอดีต, future~EndDate ต้องเป็นวันที่ในอนาคต"`
-	PlanImg        string `valid:"required~ใส่รูปภาพ, image_valid~ใส่รูปภาพ"`
+	CruiseTripName string  `valid:"required~กรอกชื่อทริปเรือ"`
+    ParticNum      int     ` valid:"required~กรุณาระบุจำนวนผู้เข้าร่วม"`
+    PlanImg        string  ` valid:"required~กรุณาใส่รูปภาพ"`
+	StartDate 		time.Time `valid:"required~เวลาห้ามเป็นอดีต, future~StartDate ต้องเป็นวันที่ในอนาคต"`
+	EndDate   		time.Time `valid:"required~เวลาห้ามเป็นอดีต, future~EndDate ต้องเป็นวันที่ในอนาคต"`
 	PlanPrice      float64 `valid:"required~กรอกราคาช่วง 10000 - 1000000, range(10000|10000000)~กรอกราคาช่วง 10000 - 1000000"`
-	ParticNum      int `valid:"required~กรอกตัวเลข, description_valid~ใส่จำนวนคน"`
+	Deets      string `valid:"required~กรุณากรอกรายละเอียด"`
+    
+	ShipID uint `valid:"required~Ship is required"`
+    Ship   Ship `gorm:"foreignKey:ShipID"`
 
-	ShipID      uint `valid:"required~กรอกชื่อเรือ"`
-	Ship        Ship `gorm:"foreignKey:ShipID"`
+    RoutesID uint `valid:"required~Route is required"`
+    Routes   Routes `gorm:"foreignKey:RoutesID"`
 
 	EmployeesID uint
 	Employees   Employees `gorm:"foreignKey:EmployeesID"`
-
-	RoutesID uint `valid:"required~กรุณาเลือกเส้นทาง"`
-	Routes   Routes `gorm:"foreignKey:RoutesID"`
-
 }
 
 

@@ -38,6 +38,7 @@ func CreateCruiseTrip(c *gin.Context) {
         c.JSON(http.StatusNotFound, gin.H{"error": "Ship not found"})
         return
     }
+    
 
     // // Validate route
     var route entity.Routes
@@ -54,7 +55,8 @@ func CreateCruiseTrip(c *gin.Context) {
         c.JSON(http.StatusNotFound, gin.H{"error": "Admin not found"})
         return
     }
-
+    
+    
     // Create CruiseTrip
     pl := entity.CruiseTrip{
         CruiseTripName: cruisetrip.CruiseTripName,
@@ -127,7 +129,7 @@ func DeleteCruiseTrip(c *gin.Context) {
 
 	id := c.Param("id")
 	db := config.DB()
-	if tx := db.Exec("DELETE FROM cruisetrips WHERE id = ?", id); tx.RowsAffected == 0 {
+	if tx := db.Exec("DELETE FROM cruise_trips WHERE id = ?", id); tx.RowsAffected == 0 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "id not found"})
 		return
 	}

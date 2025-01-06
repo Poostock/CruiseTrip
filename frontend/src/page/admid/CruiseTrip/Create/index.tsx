@@ -110,16 +110,17 @@ const CruiseTripCreate: React.FC = () => {
             const newTrip: CruiseTripInterface = {
                 CruiseTripName: cruiseTripName,
                 Deets: description,
-                RoutesID: selectedRoute,
                 PlanImg: planImg ? await getBase64(planImg) : planPicURL,
                 ParticNum: particNum,
                 PlanPrice: planPrice,
-                StartDate: startDate ? new Date(startDate) : undefined,
-                EndDate: endDate ? new Date(endDate) : undefined,
+                StartDate: startDate ? startDate.toISOString() : undefined,
+                EndDate: endDate ? endDate.toISOString() : undefined,
                 ShipID: selectedShip,
                 EmployeesID: adminIDNumber,
+                RoutesID: selectedRoute,
             };
-            
+            console.log("Payload sent to API:", JSON.stringify(newTrip, null, 2));
+
 
             console.log("Creating cruise trip with data:", newTrip);
 
@@ -231,7 +232,7 @@ const CruiseTripCreate: React.FC = () => {
                                 setSelectedShip={setSelectedShip}
                                 description={description}
                                 setDescription={setDescription}
-                                selectedRoute={selectedRoute}
+                                selectedRoutes={selectedRoute}
                                 setSelectedRoute={setSelectedRoute}
                                 planPrice={planPrice}
                                 setPlanPrice={setPlanPrice}

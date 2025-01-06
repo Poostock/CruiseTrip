@@ -76,20 +76,22 @@ const EditCruiseTrip: React.FC = () => {
         const delayedUpdateClass = new Promise<boolean>((resolve, reject) => {
             const updateCruiseTripAsync = async () => {
                 try {
-                    const adminID = localStorage.getItem("id");
-                    const adminIDNumber = adminID ? Number(adminID) : 1;
+                    // const adminID = localStorage.getItem("id");
+                    // const adminIDNumber = adminID ? Number(adminID) : 1;
+                    const adminIDNumber = 1;
                     const updateTrip: CruiseTripInterface = {
                         CruiseTripName: cruiseTripName,
                         Deets: description,
-                        RoutesID: selectedRoute,
                         PlanImg: planImg ? await getBase64(planImg) : planPicURL,
                         ParticNum: particNum,
                         PlanPrice: planPrice,
-                        StartDate: startDate ? new Date(startDate) : undefined,
-                        EndDate: endDate ? new Date(endDate) : undefined,
+                        StartDate: startDate ? startDate.toISOString() : undefined,
+                        EndDate: endDate ? endDate.toISOString() : undefined,
                         ShipID: selectedShip,
                         EmployeesID: adminIDNumber,
+                        RoutesID: selectedRoute,
                     };
+                    // console.log("Payload sent to API:", JSON.stringify(updateTrip, null, 2));
 
                     const res = await UpdateCruiseTrip(updateTrip);
                     if (res) {
@@ -202,7 +204,7 @@ const EditCruiseTrip: React.FC = () => {
                                 cruiseTripName={cruiseTripName}
                                 setCruiseTripName={setCruiseTripName}
                                 routes={routes}
-                                selectedRoute={selectedRoute}
+                                selectedRoutes={selectedRoute}
                                 setSelectedRoute={setSelectedRoute}
                                 ships={ships}
                                 selectedShip={selectedShip}

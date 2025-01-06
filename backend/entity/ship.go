@@ -6,7 +6,7 @@ import (
 
 type Ship struct {
 	gorm.Model
-	Name       string       `gorm:"uniqueIndex" valid:"required~กรอกชื่อเรือ"`
+	Name       string       `gorm:"uniqueIndex"`
 	CruiseTrip []CruiseTrip `gorm:"foreignKey:ShipID"`
 	// Employees  []Employees `gorm:"foreignKey:ShipID"`
 }

@@ -88,7 +88,7 @@ func TestInvalidPlanPrice(t *testing.T) {
 	// err ต้องไม่เป็นค่า nil
 	g.Expect(err).NotTo(BeNil())
 	// err.Error ต้องมีข้อความแสดงข้อผิดพลาด
-	g.Expect(err.Error()).To(ContainSubstring("กรอกราคาช่วง 1000000 - 1000000"))
+	g.Expect(err.Error()).To(ContainSubstring("กรอกราคาช่วง 10000 - 1000000"))
 }
 
 
@@ -142,7 +142,7 @@ func TestMissingShipID(t *testing.T) {
 	// err ต้องไม่เป็นค่า nil
 	g.Expect(err).NotTo(BeNil())
 	// err.Error ต้องมีข้อความแสดงข้อผิดพลาด
-	g.Expect(err.Error()).To(ContainSubstring("กรอกชื่อเรือ"))
+	g.Expect(err.Error()).To(ContainSubstring("กรุณาเลือกเรือ"))
 }
 
 

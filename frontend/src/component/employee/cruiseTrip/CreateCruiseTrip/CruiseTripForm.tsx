@@ -6,7 +6,7 @@ import Select from '../Select';
 import Textarea from '../Textarea';
 import DateTimePicker from '../DateTimePicker';
 import { ShipInterface } from '../../../../interfaces/IShip';
-import { RouteInterface } from '../../../../interfaces/IRoute';
+import { RoutesInterface } from '../../../../interfaces/IRoute';
 
 interface CruiseTripForm {
     cruiseTripName: string;
@@ -15,7 +15,7 @@ interface CruiseTripForm {
     setSelectedShip: React.Dispatch<React.SetStateAction<number | undefined>>;
     description: string;
     setDescription: React.Dispatch<React.SetStateAction<string>>;
-    selectedRoute: number | undefined;
+    selectedRoutes: number | undefined;
     setSelectedRoute: React.Dispatch<React.SetStateAction<number | undefined>>;
     planPrice: number | undefined; // เพิ่มฟิลด์สำหรับ PlanPrice
     setPlanPrice: React.Dispatch<React.SetStateAction<number | undefined>>; // เพิ่ม Setter สำหรับ PlanPrice
@@ -25,7 +25,7 @@ interface CruiseTripForm {
     setEndDate: React.Dispatch<React.SetStateAction<Date | null>>;
     particNum: number | undefined;
     setParticNum: React.Dispatch<React.SetStateAction<number | undefined>>;
-    routes: RouteInterface[];
+    routes: RoutesInterface[];
     ships: ShipInterface[];
 }
 
@@ -36,7 +36,7 @@ const CruiseTripForm: React.FC<CruiseTripForm> = ({
     setSelectedShip,
     description,
     setDescription,
-    selectedRoute,
+    selectedRoutes,
     setSelectedRoute,
     planPrice, // รับค่าของ PlanPrice
     setPlanPrice, // รับ Setter ของ PlanPrice
@@ -72,7 +72,7 @@ const CruiseTripForm: React.FC<CruiseTripForm> = ({
                 value: route.ID?.toString() || "",
                 label: route.Name || "Unnamed",
             }))}
-            value={selectedRoute?.toString() || ""}
+            value={selectedRoutes?.toString() || ""}
             onChange={(value) => setSelectedRoute(value ? Number(value) : undefined)}
             label="Route"
         />

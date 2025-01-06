@@ -85,7 +85,7 @@ func SetupDatabase() {
 
 	StartDate, _ := time.Parse("2006-01-02 15:04:05", "2024-08-31 14:30:00")
 	EndDate, _ := time.Parse("2006-01-02 15:04:05", "2024-09-30 14:30:00")
-
+	
 	CruiseTrip := &entity.CruiseTrip{
 		CruiseTripName: "Vietnam & Thailand Cruise",
 		Deets:          "40 คืน",

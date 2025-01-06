@@ -18,7 +18,7 @@ interface Ship {
     Name: string;
 }
 
-interface Route {
+interface Routes {
     ID: number;
     Name: string
 }
@@ -29,12 +29,11 @@ interface CruiseTrip {
     Deets: string;
     StartDate: Date;
     EndDate: Date;
-    Routes: Route;
+    Routes: Routes;
     PlanImg: string;
     PlanPrice: number;
     ParticNum: number;
     Ship: Ship;
-    // Employees: Employees;
 }
 
 const CruiseTrip: React.FC = () => {
@@ -169,14 +168,14 @@ const CruiseTrip: React.FC = () => {
             {/* Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-gray4 p-6 rounded-lg shadow-lg text-white border border-green3">
+                    <div className="bg-gray p-6 rounded-lg shadow-lg text-white border border-green">
                         <h2 className="text-lg">Confirm Deletion</h2>
                         <p className="mt-2">Are you sure you want to delete the cruise trip "{cruiseTripNameToDelete}"?</p>
                         <div className="mt-4 flex justify-end">
                             <button className="bg-rose-500 text-white px-4 py-2 rounded-md mr-2" onClick={confirmDelete}>
                                 Delete
                             </button>
-                            <button className="bg-gray2 text-white px-4 py-2 rounded-md" onClick={() => setIsModalOpen(false)}>
+                            <button className="bg-gray text-white px-4 py-2 rounded-md" onClick={() => setIsModalOpen(false)}>
                                 Cancel
                             </button>
                         </div>

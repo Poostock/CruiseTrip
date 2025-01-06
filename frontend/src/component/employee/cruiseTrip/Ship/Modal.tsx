@@ -144,7 +144,7 @@ const Modal: React.FC<ModalProps> = ({
                                 Cancel
                             </button>
                             <button
-                                className="bg-green3 text-black px-4 py-2 rounded-lg hover:bg-green5 hover:text-white"
+                                className="bg-green text-black px-4 py-2 rounded-lg hover:bg-green hover:text-white"
                                 onClick={handleSubmit}
                             >
                                 Delete
