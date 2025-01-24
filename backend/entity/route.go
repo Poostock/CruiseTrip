@@ -6,6 +6,6 @@ import (
 
 type Routes struct {
 	gorm.Model
-	Name       string       `gorm:"uniqueIndex"`
+	RouteName       string       `gorm:"uniqueIndex"`
 	CruiseTrip []CruiseTrip `gorm:"foreignKey:RoutesID"`
 }

@@ -10,7 +10,7 @@ interface DateTimePickerProps {
 
 const DateTimePicker: React.FC<DateTimePickerProps> = ({ selectedDate, onChange, label }) => (
     <div>
-        <label className="block text-green1 mb-1 text-[20px]">{label}</label>
+        <label className="block text-white mb-1 text-[20px]">{label}</label>
         <DatePicker
             selected={selectedDate}
             onChange={onChange}

@@ -70,7 +70,7 @@ const CruiseTripForm: React.FC<CruiseTripForm> = ({
         <Select
             options={routes.map((route) => ({
                 value: route.ID?.toString() || "",
-                label: route.Name || "Unnamed",
+                label: route.RouteName || "Unnamed",
             }))}
             value={selectedRoutes?.toString() || ""}
             onChange={(value) => setSelectedRoute(value ? Number(value) : undefined)}

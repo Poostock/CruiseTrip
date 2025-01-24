@@ -27,7 +27,7 @@ const ShipTable: React.FC<ShipTableProps> = ({ ships, onEdit, onDelete }) => {
                         <td className="border-b p-2">
                             <div className="space-x-6 flex items-center">
                             <button onClick={() => onEdit(ship)}>
-                                <FiEdit className="text-green2 w-6 h-auto" />
+                                <FiEdit className="text-green w-6 h-auto" />
                             </button>
                             <button
                                 

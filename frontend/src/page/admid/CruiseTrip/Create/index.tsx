@@ -14,6 +14,7 @@ import { GetShips } from "../../../../service/https/cruiseTrip/ship";
 import { GetRoutes } from "../../../../service/https/cruiseTrip/route";
 import imageCompression from "browser-image-compression";
 import CruiseTripForm from "../../../../component/employee/cruiseTrip/CreateCruiseTrip/CruiseTripForm";
+import NavbarAdmin from "../../../../component/employee/admin_navbar";
 
 const CruiseTripCreate: React.FC = () => {
     const [cruiseTripName, setCruiseTripName] = useState<string>("");
@@ -129,7 +130,7 @@ const CruiseTripCreate: React.FC = () => {
                 setTimeout(() => {
                     toast.success("CruiseTrip created successfully!");
                 }, 1000);
-                navigate("/cruiseTrip");
+                navigate("/admin/cruiseTrip");
             } else {
                 toast.error("Failed to create cruise trip.");
             }
@@ -206,48 +207,47 @@ const CruiseTripCreate: React.FC = () => {
 
     return (
         <div className="flex">
-            <SideBar />
             <div className="bg-white w-full">
-                <Navbar title="Cruise trip" />
+                <NavbarAdmin />
                 <div>
                     <div className="navbar bg-white h-[76px] flex items-center">
                         <h1 className="text-3xl text-black ml-14 mt-2">สร้างทริป</h1>
                         <button
-                            className="text-white font-sans font-medium text-m px-5 py-3 flex items-center bg-gray rounded-full hover:bg-green5 ml-auto mr-14 shadow-md hover:shadow-lg"
+                            className="text-white font-sans font-medium text-m px-5 py-3 flex items-center bg-gray rounded-full hover:bg-green ml-auto mr-14 shadow-md hover:shadow-lg"
                             onClick={showConfirmModal}
                         >
-                            <FaRegSave className="w-[24px] h-auto cursor-pointer text-green1 mr-2" />
+                            <FaRegSave className="w-[24px] h-auto cursor-pointer text-green mr-2" />
                             <span>Save</span>
                         </button>
                     </div>
                 </div>
                 <div className="flex flex-wrap justify-center">
-                    <div className="bg-gray4 mt-5 w-[1000px] h-[480px] rounded-3xl overflow-auto scrollable-div flex justify-center">
-                        <div className="flex flex-row items-start m-8">
-                            <Dropzone onDrop={handleDrop} planPicURL={planPicURL} />
-                            <CruiseTripForm
-                                cruiseTripName={cruiseTripName}
-                                setCruiseTripName={setCruiseTripName}
-                                selectedShip={selectedShip}
-                                setSelectedShip={setSelectedShip}
-                                description={description}
-                                setDescription={setDescription}
-                                selectedRoutes={selectedRoute}
-                                setSelectedRoute={setSelectedRoute}
-                                planPrice={planPrice}
-                                setPlanPrice={setPlanPrice}
-                                startDate={startDate}
-                                setStartDate={setStartDate}
-                                endDate={endDate}
-                                setEndDate={setEndDate}
-                                particNum={particNum}
-                                setParticNum={setParticNum}
-                                routes={routes}
-                                ships={ships}
-                            />
-                        </div>
-                    </div>
-                </div>
+    <div className="bg-white mt-5 w-[1000px] h-[480px] rounded-3xl shadow-lg overflow-auto scrollable-div flex justify-center">
+        <div className="flex flex-row items-start m-8">
+            <Dropzone onDrop={handleDrop} planPicURL={planPicURL} />
+            <CruiseTripForm
+                cruiseTripName={cruiseTripName}
+                setCruiseTripName={setCruiseTripName}
+                selectedShip={selectedShip}
+                setSelectedShip={setSelectedShip}
+                description={description}
+                setDescription={setDescription}
+                selectedRoutes={selectedRoute}
+                setSelectedRoute={setSelectedRoute}
+                planPrice={planPrice}
+                setPlanPrice={setPlanPrice}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                particNum={particNum}
+                setParticNum={setParticNum}
+                routes={routes}
+                ships={ships}
+            />
+        </div>
+    </div>
+</div>
             </div>
             <ConfirmModal visible={modalVisible} onOk={handleSave} onCancel={handleCancel} confirmLoading={confirmLoading} />
             <Toaster />

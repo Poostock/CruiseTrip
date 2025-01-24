@@ -14,6 +14,7 @@ import imageCompression from "browser-image-compression";
 import { GetCruiseTripById, UpdateCruiseTrip } from "../../../../service/https/cruiseTrip";
 import { GetShips } from "../../../../service/https/cruiseTrip/ship";
 import { GetRoutes } from "../../../../service/https/cruiseTrip/route";
+import NavbarAdmin from "../../../../component/employee/admin_navbar";
 
 const EditCruiseTrip: React.FC = () => {
     const { cruiseTripID } = useParams<{ cruiseTripID: string }>();
@@ -56,17 +57,18 @@ const EditCruiseTrip: React.FC = () => {
             if (!cruiseTripID) return;
             const res = await GetCruiseTripById(Number(cruiseTripID));
             if (res) {
-                setCruiseTripName(res.ClassName || "");
+                setCruiseTripName(res.CruiseTripName || "");
                 setSelectedRoute(res.RouteID);
                 setSelectedShip(res.ShipID);
+                setPlanPrice(res.PlanPrice || undefined);
                 setStartDate(res.StartDate ? new Date(res.StartDate) : null);
                 setEndDate(res.EndDate ? new Date(res.EndDate) : null);
                 setDescription(res.Deets || "");
-                setPlanPicURL(res.ClassPic || "");
+                setPlanPicURL(res.PlanImg || "");
                 setParticNum(res.ParticNum || undefined);
             }
         } catch (error) {
-            console.error("Failed to fetch class details", error);
+            console.error("Failed to fetch ship details", error);
         }
     }, [cruiseTripID]);
 
@@ -91,7 +93,7 @@ const EditCruiseTrip: React.FC = () => {
                         EmployeesID: adminIDNumber,
                         RoutesID: selectedRoute,
                     };
-                    // console.log("Payload sent to API:", JSON.stringify(updateTrip, null, 2));
+                    console.log("Payload sent to API:", JSON.stringify(updateTrip, null, 2));
 
                     const res = await UpdateCruiseTrip(updateTrip);
                     if (res) {
@@ -179,9 +181,8 @@ const EditCruiseTrip: React.FC = () => {
 
     return (
         <div className="flex">
-            <SideBar />
             <div className="bg-white w-full">
-                <Navbar title="CruiseTrip" />
+                <NavbarAdmin />
                 <div className="navbar bg-white h-[76px] flex items-center">
                     <h1 className="text-3xl text-black ml-14 mt-5">แก้ไขทริปเรือ</h1>
                     <button
@@ -196,33 +197,32 @@ const EditCruiseTrip: React.FC = () => {
                     </button>
                 </div>
                 <div className="flex flex-wrap justify-center">
-                    <div className="bg-gray4 mt-5 w-[1000px] h-[480px] rounded-3xl overflow-auto scrollable-div flex justify-center">
-                        <div className="flex  ">
-                            <div className="pt-10"><Dropzone onDrop={handleDrop} planPicURL={planPicURL} /></div>
-                            
-                            <Form
-                                cruiseTripName={cruiseTripName}
-                                setCruiseTripName={setCruiseTripName}
-                                routes={routes}
-                                selectedRoutes={selectedRoute}
-                                setSelectedRoute={setSelectedRoute}
-                                ships={ships}
-                                selectedShip={selectedShip}
-                                setSelectedShip={setSelectedShip}
-                                planPrice={planPrice}
-                                setPlanPrice ={setPlanPrice}
-                                description={description}
-                                setDescription={setDescription}
-                                startDate={startDate}
-                                setStartDate={setStartDate}
-                                endDate={endDate}
-                                setEndDate={setEndDate}
-                                particNum={particNum}
-                                setParticNum={setParticNum}
-                            />
-                        </div>
-                    </div>
-                </div>
+    <div className="bg-white mt-5 w-[1000px] h-[480px] rounded-3xl shadow-lg overflow-auto scrollable-div flex justify-center">
+        <div className="flex flex-row items-start m-8">
+            <Dropzone onDrop={handleDrop} planPicURL={planPicURL} />
+            <Form
+                cruiseTripName={cruiseTripName}
+                setCruiseTripName={setCruiseTripName}
+                selectedShip={selectedShip}
+                setSelectedShip={setSelectedShip}
+                description={description}
+                setDescription={setDescription}
+                selectedRoutes={selectedRoute}
+                setSelectedRoute={setSelectedRoute}
+                planPrice={planPrice}
+                setPlanPrice={setPlanPrice}
+                startDate={startDate}
+                setStartDate={setStartDate}
+                endDate={endDate}
+                setEndDate={setEndDate}
+                particNum={particNum}
+                setParticNum={setParticNum}
+                routes={routes}
+                ships={ships}
+            />
+        </div>
+    </div>
+</div>
             </div>
             <Modal title="Confirm Save" visible={modalVisible} onOk={handleSave} onCancel={handleCancel} confirmLoading={confirmLoading}>
                 <p>Are you sure you want to Update this cruise trip?</p>

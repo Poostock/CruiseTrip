@@ -1,4 +1,4 @@
 export interface RoutesInterface {
     ID?: number;
-    Name?: string;
+    RouteName?: string;
 }

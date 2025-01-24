@@ -76,9 +76,9 @@ const Dropzone: React.FC<DropzoneProps> = ({ planPicURL, onDrop }) => {
                 >
                     <RiImageAddFill style={{ fontSize: "32px", marginBottom: "8px" }} />
                     <p style={{ fontSize: "13px", textAlign: "center" }}>
-                        Drag and drop <span style={{ color: "#8BC804" }}>or browse</span> to upload
+                        อัปโหลด 
                     </p>
-                    <p style={{ fontSize: "11px", textAlign: "center" }}>PNG, JPG </p>
+                    
                 </div>
             )}
         </div>

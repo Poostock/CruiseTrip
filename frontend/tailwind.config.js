@@ -22,6 +22,9 @@ export default {
               dropZone: "#C4C4C4",
               success: "#4caf50",
               error: "#f44336",
+              blue: "#00BFFF",
+              highblue: "#133e87",
+              bluelight: "#ADD8E6",
           },
           fontFamily: {
               sans: ["Poppins", "sans-serif"],

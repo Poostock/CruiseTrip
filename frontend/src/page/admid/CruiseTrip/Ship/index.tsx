@@ -1,134 +1,162 @@
 import React, { useState, useEffect } from "react";
-import Modal from "../../../../component/employee/cruiseTrip/Ship/Modal";
-import SideBar from "../../../../component/employee/cruiseTrip/SideBar";
-import Navbar from "../../../../component/employee/cruiseTrip/Navbar";
+import { Table, Button, Modal, Form, Input } from "antd";
 import { GrAddCircle } from "react-icons/gr";
 import toast, { Toaster } from "react-hot-toast";
+import SideBar from "../../../../component/employee/cruiseTrip/SideBar";
+import Navbar from "../../../../component/employee/cruiseTrip/Navbar";
 import { ShipInterface } from "../../../../interfaces/IShip";
-import { DeleteShipsByID, GetShips } from "../../../../service/https/cruiseTrip/ship";
-import ShipTable from "../../../../component/employee/cruiseTrip/Ship/ShipTable";
-
-// Utility for modal management
-const useModal = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const openModal = () => setIsOpen(true);
-    const closeModal = () => setIsOpen(false);
-    return { isOpen, openModal, closeModal };
-};
+import { DeleteShipsByID, GetShips, UpdateShip, CreateShip } from "../../../../service/https/cruiseTrip/ship";
+import NavbarAdmin from "../../../../component/employee/admin_navbar";
 
 const Ship: React.FC = () => {
-    // Modal state hooks
-    const createModal = useModal();
-    const editModal = useModal();
-    const deleteModal = useModal();
-
-    // State for ship management
     const [ships, setShips] = useState<ShipInterface[]>([]);
-    const [shipToDelete, setShipToDelete] = useState<number | null>(null);
-    const [shipNameToDelete, setShipNameToDelete] = useState<string>("");
-    const [shipToEdit, setShipToEdit] = useState<ShipInterface | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalType, setModalType] = useState<"create" | "edit" | null>(null); // รองรับ null
+    const [selectedShip, setSelectedShip] = useState<ShipInterface | null>(null);
+    const [form] = Form.useForm();
 
-    // Fetch ship
     const fetchShips = async () => {
         try {
             const res = await GetShips();
-            if (res) setShips(res);
+            setShips(res);
         } catch (error) {
-            console.error("Failed to fetch classes", error);
+            console.error("Failed to fetch ships", error);
         }
     };
 
-    // Handle delete class type
-    const handleDelete = async () => {
-        if (shipToDelete !== null) {
-            const deleteShipPromise = new Promise((resolve, reject) => {
-                DeleteShipsByID(shipToDelete)
-                    .then(() => {
-                        resolve("Ship deleted successfully.");
-                    })
-                    .catch(() => {
-                        reject("Failed to delete ship.");
-                    });
-            });
+    const handleCreate = () => {
+        setModalType("create"); // เปลี่ยนสถานะเป็น create
+        setSelectedShip(null);
+        setIsModalOpen(true);
+        form.resetFields(); // ล้างข้อมูลในฟอร์ม
+    };
 
-            toast.promise(deleteShipPromise, {
-                loading: "Deleting...",
-                success: <b>Ship "{shipNameToDelete}" has been deleted successfully.</b>,
-                error: <b>Failed to delete ship.</b>,
-            });
+    const handleEdit = (ship: ShipInterface) => {
+        setModalType("edit"); // เปลี่ยนสถานะเป็น edit
+        setSelectedShip(ship);
+        setIsModalOpen(true);
+        form.setFieldsValue({
+            Name: ship.Name,
+        });
+    };
 
-            try {
-                await deleteShipPromise;
-                fetchShips();
-            } finally {
-                deleteModal.closeModal();
+    const handleDelete = async (ship: ShipInterface) => {
+        try {
+            await DeleteShipsByID(ship.ID);
+            toast.success(`Ship "${ship.Name}" has been deleted.`);
+            fetchShips();
+        } catch (error) {
+            toast.error("Failed to delete ship.");
+        }
+    };
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+        setModalType(null); // ตั้งค่า modalType กลับเป็น null
+        setSelectedShip(null);
+    };
+
+    // ฟังก์ชันสำหรับ handleSubmit จะเหมือนเดิม
+    const handleSubmit = async (values: any) => {
+        try {
+            if (modalType === "create") {
+                await CreateShip({ Name: values.Name });
+                toast.success("เรือถูกสร้างเรียบร้อยแล้ว");
+            } else if (modalType === "edit" && selectedShip) {
+                await UpdateShip({ ...selectedShip, Name: values.Name });
+                toast.success("เรือถูกแก้ไขเรียบร้อยแล้ว");
             }
+            fetchShips();
+            handleModalClose();
+        } catch (error) {
+            console.error(error);
+            toast.error("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
         }
     };
 
-    // Open modals with selected class type
-    const openEditModal = (ship: ShipInterface) => {
-        setShipToEdit(ship);
-        editModal.openModal();
-    };
+    const columns = [
+        {
+            title: "ID",
+            dataIndex: "ID",
+            key: "ID",
+        },
+        {
+            title: "ชื่อเรือ",
+            dataIndex: "Name",
+            key: "Name",
+        },
+        {
+            title: "การจัดการ",
+            key: "actions",
+            render: (text: string, record: ShipInterface) => (
+                <>
+                    <Button type="link" onClick={() => handleEdit(record)}>
+                        แก้ไข
+                    </Button>
+                    <Button type="link" danger onClick={() => handleDelete(record)}>
+                        ลบ
+                    </Button>
+                </>
+            ),
+        },
+    ];
 
-    const openDeleteModal = (id: number, name: string) => {
-        setShipToDelete(id);
-        setShipNameToDelete(name);
-        deleteModal.openModal();
-    };
-
-    // Initial data fetching
     useEffect(() => {
         fetchShips();
     }, []);
 
     return (
         <div className="flex flex-col md:flex-row">
-            <SideBar />
             <div className="bg-white w-full">
-                <Navbar title="เรือ" />
+                <NavbarAdmin />
                 <div className="navbar bg-forth h-[76px] flex items-center">
                     <div className="ml-auto mr-4 md:mr-14 mt-2">
-                        <button
+                        <Button
                             className="text-white font-sans font-medium text-m px-5 py-3 flex items-center bg-gray rounded-full hover:bg-green shadow-md hover:shadow-lg"
-                            onClick={createModal.openModal}
+                            icon={<GrAddCircle />}
+                            onClick={handleCreate}
                         >
-                            <GrAddCircle className="w-[24px] h-auto cursor-pointer text-green mr-2" />
-                            <span>Create</span>
-                        </button>
+                            สร้างเรือใหม่
+                        </Button>
                     </div>
                 </div>
-                <div className="text-white bg-white overflow-auto h-[520px] scrollable-div flex justify-center">
-                    <div className="max-w-full w-full md:w-[700px] h-[490px] bg-gray rounded-xl mt-6 p-4">
-                        <ShipTable ships={ships} onEdit={openEditModal} onDelete={openDeleteModal} />
-                        <Toaster />
-                    </div>
+                <div className="p-6">
+                    <Table
+                        columns={columns}
+                        dataSource={ships}
+                        rowKey="ID"
+                        pagination={{ pageSize: 5 }}
+                    />
                 </div>
-
-                {/* Modals */}
                 <Modal
-                    isOpen={createModal.isOpen}
-                    onClose={createModal.closeModal}
-                    title="Create Ship"
-                    fetchShips={fetchShips}
-                />
-                <Modal
-                    isOpen={editModal.isOpen}
-                    onClose={editModal.closeModal}
-                    title="Edit Ship"
-                    type="edit"
-                    ship={shipToEdit}
-                    fetchShips={fetchShips}
-                />
-                <Modal
-                    isOpen={deleteModal.isOpen}
-                    onClose={deleteModal.closeModal}
-                    title="Confirm Delete"
-                    type="delete"
-                    shipName={shipNameToDelete}
-                    onDelete={handleDelete}
-                />
+                    title={modalType === "create" ? "สร้างชื่อเรือใหม่" : `แก้ไขชื่อเรือ: ${selectedShip?.Name}`}
+                    visible={isModalOpen}
+                    onCancel={handleModalClose}
+                    footer={null}
+                >
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        onFinish={handleSubmit}
+                    >
+                        <Form.Item
+                            label="ชื่อเรือ"
+                            name="Name"
+                            rules={[{ required: true, message: "กรุณากรอกชื่อเรือ" }]}
+                        >
+                            <Input placeholder="กรอกชื่อเรือ" />
+                        </Form.Item>
+                        <div className="flex justify-end">
+                            <Button onClick={handleModalClose} style={{ marginRight: 8 }}>
+                                ยกเลิก
+                            </Button>
+                            <Button type="primary" htmlType="submit">
+                                {modalType === "create" ? "สร้าง" : "บันทึกการแก้ไข"}
+                            </Button>
+                        </div>
+                    </Form>
+                </Modal>
+                <Toaster />
             </div>
         </div>
     );

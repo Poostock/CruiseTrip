@@ -25,6 +25,8 @@ type CruiseTrip struct {
 
 	EmployeesID uint
 	Employees   Employees `gorm:"foreignKey:EmployeesID"`
+
+	BookingTrip []BookingTrip `gorm:"foreignKey:CruiseTripID"`
 }
 
 

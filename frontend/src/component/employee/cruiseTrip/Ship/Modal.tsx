@@ -126,7 +126,7 @@ const Modal: React.FC<ModalProps> = ({
                                 Close
                             </button>
                             <button
-                                className="bg-green3 text-black px-4 py-2 rounded-lg hover:bg-hover hover:text-white"
+                                className="bg-green text-black px-4 py-2 rounded-lg hover:bg-hover hover:text-white"
                                 onClick={handleSubmit}
                             >
                                 {type === "create" ? "Save" : "Update"}

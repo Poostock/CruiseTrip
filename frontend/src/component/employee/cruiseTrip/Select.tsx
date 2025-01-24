@@ -15,7 +15,7 @@ interface SelectProps {
 const Select: React.FC<SelectProps> = ({ options, onChange, value, label }) => {
     return (
         <div className="flex flex-col">
-            <label className="text-green1 mb-1 text-[20px]">{label}</label>
+            <label className="text-white mb-1 text-[20px]">{label}</label>
             <select
                 className="border rounded-xl w-[300px] h-[40px] mb-4 overflow-auto"
                 value={value}

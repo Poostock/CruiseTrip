@@ -7,6 +7,7 @@ import { GiCruiser } from "react-icons/gi";
 import { Link, useLocation } from "react-router-dom";
 import { FaRegDotCircle } from "react-icons/fa";
 import MyImage from "../../../assets/Trip.jpg"
+import { MdOutlineSportsVolleyball } from "react-icons/md";
 
 
 interface MenuItem {
@@ -22,7 +23,7 @@ const SideBar: React.FC = () => {
     const location = useLocation();
 
     const Menus: MenuItem[] = [
-        { title: "Dashboard", icon: <MdOutlineSpaceDashboard />, link: "/dashboard" },
+        
         {
             title: "ทริปเรือ",
             icon: <GiCruiser />,
@@ -31,6 +32,7 @@ const SideBar: React.FC = () => {
                 { title: "เรือ", icon: <FaRegDotCircle />, link: "/cruiseTrip/ship" },
             ],
         },
+        { title: "Activity", icon: <MdOutlineSportsVolleyball />, link: "/activity" },
         
     ];
 
@@ -46,14 +48,10 @@ const SideBar: React.FC = () => {
         <div className={`bg-white text-black h-screen ${open ? "w-72" : "w-20"} duration-300 relative border-r-[5px] border-gray `}>
             <BsArrowLeftShort
                 className={`bg-white text-gray text-3xl rounded-full z-20
-                absolute -right-3 top-5 border border-gray4 cursor-pointer ${!open && "rotate-180"}`}
+                absolute -right-3 top-5 border border-gray cursor-pointer ${!open && "rotate-180"}`}
                 onClick={() => setOpen(!open)}
             />
             <div className="flex justify-center items-center p-4">
-                
-                <h1 className={`text-2xl origin-left text-black font-sans font-bold italic duration-300 ${!open && "scale-0"}`}>
-                    {/* FitFlowz */}
-                </h1>
                 <img src={MyImage} alt="My Image" width="100" height="100 " />
             </div>
             <div className="w-full h-1 mt-1 bg-white"></div>
@@ -63,8 +61,8 @@ const SideBar: React.FC = () => {
                     <li key={index} className="relative">
                         <Link
                             to={menu.link || "#"}
-                            className={`text-black font-sans font-medium text-xl flex items-center gap-x-4 cursor-pointer p-4 mt-2 ml-1 hover:bg-green5 hover:text-green3 hover:bg-opacity-10 hover:rounded-full w-max ${
-                                isActive(menu.link) ? " bg-green bg-opacity-10 rounded-full w-max text-green2" : ""
+                            className={`text-black font-sans font-medium text-xl flex items-center gap-x-4 cursor-pointer p-4 mt-2 ml-1 hover:bg-black hover:text-white hover:bg-opacity-10 hover:rounded-full w-max ${
+                                isActive(menu.link) ? " bg-black bg-opacity-10 rounded-full w-max text-black" : ""
                             }`}
                             onClick={() => menu.submenu && toggleSubMenu(menu.title)} // toggle เฉพาะเมนูหลักที่มีเมนูย่อย
                         >
@@ -85,7 +83,7 @@ const SideBar: React.FC = () => {
                                     <li key={subIndex}>
                                         <Link
                                             to={submenu.link || "#"}
-                                            className="text-black font-sans font-normal text-lg flex items-center gap-x-4 cursor-pointer p-2 mt-1 hover:bg-green5 hover:text-green3 hover:bg-opacity-10 hover:rounded-full w-max"
+                                            className="text-black font-sans font-normal text-lg flex items-center gap-x-4 cursor-pointer p-2 mt-1 hover:bg-green5 hover:text-green hover:bg-opacity-10 hover:rounded-full w-max"
                                             // คลิกเมนูย่อยไม่ปิดเมนูย่อย
                                         >
                                             <span className="text-xl">{submenu.icon}</span>

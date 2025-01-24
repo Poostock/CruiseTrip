@@ -142,7 +142,7 @@ func TestMissingShipID(t *testing.T) {
 	// err ต้องไม่เป็นค่า nil
 	g.Expect(err).NotTo(BeNil())
 	// err.Error ต้องมีข้อความแสดงข้อผิดพลาด
-	g.Expect(err.Error()).To(ContainSubstring("กรุณาเลือกเรือ"))
+	g.Expect(err.Error()).To(ContainSubstring("Ship is required"))
 }
 
 
@@ -169,5 +169,5 @@ func TestMissingRouteID(t *testing.T) {
 	// err ต้องไม่เป็นค่า nil
 	g.Expect(err).NotTo(BeNil())
 	// err.Error ต้องมีข้อความแสดงข้อผิดพลาด
-	g.Expect(err.Error()).To(ContainSubstring("กรุณาเลือกเส้นทาง"))
+	g.Expect(err.Error()).To(ContainSubstring("Route is required"))
 }

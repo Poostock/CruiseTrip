@@ -51,7 +51,7 @@ async function CountMembers() {
     return await fetchData(`${apiUrl}/members/count`, requestOptions);
 }
 
-async function CountClasses() {
+async function CountCruiseTrips() {
     const requestOptions = {
         method: "GET",
         headers: {
@@ -59,7 +59,7 @@ async function CountClasses() {
         },
     };
 
-    return await fetchData(`${apiUrl}/classes/count`, requestOptions);
+    return await fetchData(`${apiUrl}/cruisetrips/count`, requestOptions);
 }
 
 async function CountStaffs() {
@@ -75,4 +75,4 @@ async function CountStaffs() {
 
 
 
-export { SignIn, CountMembers, CountClasses, CountStaffs };
+export { SignIn, CountMembers, CountCruiseTrips, CountStaffs };

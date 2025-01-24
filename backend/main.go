@@ -40,7 +40,7 @@ func main() {
 		router.POST("/cruisetrips", controller.CreateCruiseTrip)
 		router.PATCH("/cruisetrips", controller.UpdateCruiseTrip)
 		router.DELETE("/cruisetrips/:id", controller.DeleteCruiseTrip)
-		// router.GET("/cruisetrips/count", controller.CountCruiseTrip)
+		router.GET("/cruisetrips/count", controller.CountCruiseTrips)
 		// Ship Routes
 		router.GET("/ships", controller.ListShips)
 		router.GET("/ship/:id", controller.GetShip)
@@ -59,6 +59,19 @@ func main() {
 		router.POST("/employees", controller.CreateAdmin)
 		router.PATCH("/employees", controller.UpdateAdmin)
 		router.DELETE("/employees/:id", controller.DeleteAdmin)
+
+		router.GET("/activitys", controller.ListActivitys)
+		router.GET("/activity/:id", controller.GetActivity)
+		router.POST("/activitys", controller.CreateActivity)
+		router.PATCH("/activitys", controller.UpdateActivity)
+		router.DELETE("/activitys/:id", controller.DeleteActivity)
+
+		router.GET("/bookactivitys", controller.ListBookActivitys)
+		router.GET("/bookactivity/:id", controller.GetBookActivity)
+		router.POST("/bookactivitys", controller.CreateBookActivity)
+		router.PATCH("/bookactivitys", controller.UpdateBookActivity)
+		router.DELETE("/bookactivitys/:id", controller.DeleteBookActivity)
+		router.GET("/bookActivity/byCustomerId/:id", controller.GetAllBookActivityByCustomerId)
 
 		//Count Staff
 		// router.GET("/staffs/count", controller.CountStaffs)
